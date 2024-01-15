@@ -27,16 +27,16 @@ spec:
           name: Prometheus Apps
           type: prometheus
           url: http://thanos-query.monitoring.svc.cluster.local:9090
-    ingress:
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
-      enabled: true
-      hosts:
-      - grafana.*
-      ingressClassName: nginx
-      tls:
-      - hosts:
-        - grafana.*
-        secretName: grafana-tld-secret
+    # ingress:
+    #   annotations:
+    #     cert-manager.io/cluster-issuer: letsencrypt
+    #   enabled: true
+    #   hosts:
+    #   - grafana.*
+    #   ingressClassName: nginx
+    #   tls:
+    #   - hosts:
+    #     - grafana.*
+    #     secretName: grafana-tld-secret
     persistence:
       enabled: true

@@ -43,12 +43,12 @@ curl -s https://fluxcd.io/install.sh | sudo bash
 
 The Git repository contains the following top directories:
 
-- **apps** dir contains Helm releases with a custom configuration per cluster
+- **workloads** dir contains Helm releases with a custom configuration per cluster
 - **infrastructure** dir contains common infra tools such as ingress-nginx and cert-manager
 - **clusters** dir contains the Flux configuration per cluster
 
 ```
-├── apps
+├── workloads
 │   ├── base
 │   ├── production 
 │   └── staging
@@ -60,16 +60,16 @@ The Git repository contains the following top directories:
     └── staging
 ```
 
-### Applications
+### Workloads
 
-The apps configuration is structured into:
+The workloads configuration is structured into:
 
-- **apps/base/** dir contains namespaces and Helm release definitions
-- **apps/production/** dir contains the production Helm release values
-- **apps/staging/** dir contains the staging values
+- **workloads/base/** dir contains namespaces and Helm release definitions
+- **workloads/production/** dir contains the production Helm release values
+- **workloads/staging/** dir contains the staging values
 
 ```
-./apps/
+./workloads/
 ├── base
 │   └── podinfo
 │       ├── kustomization.yaml
@@ -84,7 +84,7 @@ The apps configuration is structured into:
     └── podinfo-patch.yaml
 ```
 
-In **apps/base/podinfo/** dir we have a Flux `HelmRelease` with common values for both clusters:
+In **workloads/base/podinfo/** dir we have a Flux `HelmRelease` with common values for both clusters:
 
 ```yaml
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
@@ -108,7 +108,7 @@ spec:
       className: nginx
 ```
 
-In **apps/staging/** dir we have a Kustomize patch with the staging specific values:
+In **workloads/staging/** dir we have a Kustomize patch with the staging specific values:
 
 ```yaml
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
@@ -130,7 +130,7 @@ spec:
 Note that with ` version: ">=1.0.0-alpha"` we configure Flux to automatically upgrade
 the `HelmRelease` to the latest chart version including alpha, beta and pre-releases.
 
-In **apps/production/** dir we have a Kustomize patch with the production specific values:
+In **workloads/production/** dir we have a Kustomize patch with the production specific values:
 
 ```yaml
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
@@ -249,10 +249,10 @@ The clusters dir contains the Flux configuration:
 ```
 ./clusters/
 ├── production
-│   ├── apps.yaml
+│   ├── workloads.yaml
 │   └── infrastructure.yaml
 └── staging
-    ├── apps.yaml
+    ├── workloads.yaml
     └── infrastructure.yaml
 ```
 
@@ -262,7 +262,7 @@ In **clusters/staging/** dir we have the Flux Kustomization definitions, for exa
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps
+  name: workloads
   namespace: flux-system
 spec:
   interval: 10m0s
@@ -271,13 +271,13 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./apps/staging
+  path: ./workloads/staging
   prune: true
   wait: true
 ```
 
-Note that with `path: ./apps/staging` we configure Flux to sync the staging Kustomize overlay and 
-with `dependsOn` we tell Flux to create the infrastructure items before deploying the apps.
+Note that with `path: ./workloads/staging` we configure Flux to sync the staging Kustomize overlay and 
+with `dependsOn` we tell Flux to create the infrastructure items before deploying the workloads.
 
 Fork this repository on your personal GitHub account and export your GitHub access token, username and repo name:
 
@@ -350,7 +350,7 @@ Watch the production reconciliation:
 $ flux get kustomizations --watch
 
 NAME             	REVISION     	SUSPENDED	READY	MESSAGE                         
-apps             	main/696182e	False    	True 	Applied revision: main/696182e	
+workloads             	main/696182e	False    	True 	Applied revision: main/696182e	
 flux-system      	main/696182e	False    	True 	Applied revision: main/696182e	
 infra-configs    	main/696182e	False    	True 	Applied revision: main/696182e	
 infra-controllers	main/696182e	False    	True 	Applied revision: main/696182e	
@@ -417,11 +417,11 @@ Copy the sync manifests from staging:
 
 ```sh
 cp clusters/staging/infrastructure.yaml clusters/dev
-cp clusters/staging/apps.yaml clusters/dev
+cp clusters/staging/workloads.yaml clusters/dev
 ```
 
-You could create a dev overlay inside `apps`, make sure
-to change the `spec.path` inside `clusters/dev/apps.yaml` to `path: ./apps/dev`. 
+You could create a dev overlay inside `workloads`, make sure
+to change the `spec.path` inside `clusters/dev/workloads.yaml` to `path: ./workloads/dev`. 
 
 Push the changes to the main branch:
 
@@ -472,11 +472,11 @@ kind: Kustomization
 resources:
   - flux-system
   - ../production/infrastructure.yaml
-  - ../production/apps.yaml
+  - ../production/workloads.yaml
 ```
 
 Note that besides the `flux-system` kustomize overlay, we also include
-the `infrastructure` and `apps` manifests from the production dir.
+the `infrastructure` and `workloads` manifests from the production dir.
 
 Push the changes to the main branch:
 

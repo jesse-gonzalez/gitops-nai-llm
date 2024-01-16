@@ -11,9 +11,9 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt
       enabled: true
       hosts:
-      - grafana.nai-llm-prod.*
+      - grafana.staging
       ingressClassName: nginx
       tls:
       - hosts:
-        - grafana.nai-llm-prod.*
+        - grafana.staging
         secretName: grafana-tld-secret

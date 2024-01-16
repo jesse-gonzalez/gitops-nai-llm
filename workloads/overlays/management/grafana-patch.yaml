@@ -10,9 +10,9 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt
       enabled: true
       hosts:
-      - grafana.mgmt.*
+      - grafana.mgmt
       ingressClassName: nginx
       tls:
       - hosts:
-        - grafana.mgmt.*
+        - grafana.mgmt
         secretName: grafana-tld-secret

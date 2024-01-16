@@ -22,12 +22,12 @@ metadata:
 spec:
   chart:
     spec:
-      chart: grafana
+      chart: grafana/grafana
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
         name: grafana
-      version: 9.6.7
+      version: 7.2.1
   interval: 1m0s
   values:
     datasources:

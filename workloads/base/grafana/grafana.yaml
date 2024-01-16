@@ -22,7 +22,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: grafana/grafana
+      chart: grafana
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository

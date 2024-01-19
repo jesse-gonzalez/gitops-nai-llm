@@ -1,5 +1,0 @@
-- [ ] Migrate nai-infra packages 
-- [ ] Migrate from metallb to kube-vip
-- [ ] Add devcontainer/docker native utils
-- [ ] integrate with nai-helm for LLM deployment
-- [ ] 

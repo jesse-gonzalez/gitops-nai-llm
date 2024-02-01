@@ -9,7 +9,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
   name: ingress-nginx
-  namespace: ingress-nginx
+  namespace: flux-system
 spec:
   interval: 24h
   url: https://kubernetes.github.io/ingress-nginx
@@ -18,7 +18,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: ingress-nginx
-  namespace: ingress-nginx
+  namespace: flux-system
 spec:
   interval: 30m
   chart:

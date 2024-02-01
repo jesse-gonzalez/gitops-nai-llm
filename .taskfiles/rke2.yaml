@@ -1,0 +1,36 @@
+version: '3'
+
+vars:
+  REQUIRED_TOOLS_LIST: kubectl
+  K8S_DISTRO_NAME: 'Rancher by SUSE (RKE2)'
+
+tasks:
+
+  default:
+  - task: :helpers:validate
+    vars:
+      REQUIRED_TOOLS_LIST: "{{.REQUIRED_TOOLS_LIST}}"
+
+  init:
+    deps: [default]
+    vars:
+      K8S_CLUSTER_CONTEXT:
+        sh: kubectl config view -o jsonpath='{range .contexts[*]}{.name}{"\n"}{end}' | gum filter --placeholder "Select Target {{.K8S_DISTRO_NAME}} Cluster..."
+    cmds:
+    - kubectl config use-context {{.K8S_CLUSTER_CONTEXT}}
+    - task: generate-configs
+      vars:
+        K8S_CLUSTER_CONTEXT: "{{.K8S_CLUSTER_CONTEXT}}"
+        CLUSTER_PROFILE: "{{.CLUSTER_PROFILE}}"
+        ENVIRONMENT_TYPE: "{{.ENVIRONMENT_TYPE}}"
+
+  generate-configs:
+    deps: [default]
+    vars:
+      K8S_CLUSTER_NAME:
+        sh: kubectl config view -o jsonpath='{.contexts[?(@.name == "{{.K8S_CLUSTER_CONTEXT}}")].context.cluster}'
+    cmds:
+    - mkdir -p "{{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}"
+    - cp -rf {{.PROJECT_DIR}}/clusters/_tpl/{{.CLUSTER_PROFILE}}/{{.ENVIRONMENT_TYPE}} {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}
+    requires:
+      vars: [PROJECT_DIR, K8S_CLUSTER_CONTEXT, CLUSTER_PROFILE, ENVIRONMENT_TYPE]

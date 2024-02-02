@@ -26,9 +26,16 @@ tasks:
     vars:
       REQUIRED_TOOLS_LIST: "{{.REQUIRED_TOOLS_LIST}}"
 
+  e2e-bootstrap:
+    silent: true
+    desc: Initializes cluster configs, commits locally, pushes remotely & bootstraps FluxCD End to End
+    cmds:
+    - task: cluster-configs
+    - task: :fluxcd:bootstrap
+
   cluster-configs:
     silent: true
-    desc: Bootstrap Existing Kubernetes Cluster and Flux Controller Configs
+    desc: Initializes Cluster Configs based on Cluster Profile and Target K8s Cluster
     vars:
       PRISM_CENTRAL_ENDPOINT:
         sh: 'task bootstrap:gum -- input --header "Enter Prism Central Endpoint" --placeholder "pc.ntnxlab.local"'

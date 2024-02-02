@@ -3,4 +3,4 @@ apiVersion: v1
 metadata:
   name: cluster-config
 data:
-    foo2: bar2
+  foo2: bar2

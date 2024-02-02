@@ -33,7 +33,7 @@ tasks:
       flux bootstrap github \
         --owner=${GITHUB_USER} \
         --repository=${GITHUB_REPO} \
-        --branch=main \
+        --branch=${GITHUB_BRANCH} \
         --personal \
         --path=clusters/{{.K8S_CLUSTER_NAME}} \
         --force

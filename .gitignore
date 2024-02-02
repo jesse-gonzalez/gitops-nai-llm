@@ -50,3 +50,11 @@ __pycache__
 # gitguardian cache
 .cache_ggshield
 
+# terraform
+.terraform
+*.pem
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+terraform/**-config
+opentofu/**-config

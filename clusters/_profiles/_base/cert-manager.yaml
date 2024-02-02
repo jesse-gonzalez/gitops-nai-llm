@@ -1,7 +1,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cert-manager
+  name: cert-manager-operators
   namespace: flux-system
 spec:
   interval: 15m
@@ -9,7 +9,32 @@ spec:
     kind: GitRepository
     name: flux-system
   ##serviceAccountName: kustomize-controller
-  path: ./platform/cert-manager/_base
+  path: ./platform/cert-manager/_operators
+  prune: true
+  wait: true
+  timeout: 5m
+  postBuild:
+    substitute:
+      namespace_name: cert-manager
+    substituteFrom:
+    - kind: ConfigMap
+      name: platform-namespace-vars
+      # Use this ConfigMap if it exists, but proceed if it doesn't.
+      optional: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager-resource-configs
+  namespace: flux-system
+spec:
+  dependsOn: cert-manager-operators
+  interval: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  ##serviceAccountName: kustomize-controller
+  path: ./platform/cert-manager/_resource-configs
   prune: true
   wait: true
   timeout: 5m

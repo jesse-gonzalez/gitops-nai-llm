@@ -9,7 +9,7 @@ spec:
     kind: GitRepository
     name: flux-system
   #serviceAccountName: kustomize-controller
-  path: ./platform/ingress-nginx/_base
+  path: ./platform/ingress-nginx/_operators
   prune: true
   wait: true
   timeout: 5m

@@ -50,3 +50,4 @@ spec:
     - kind: Secret
       name: cluster-secrets
       # Fail if this Secret does not exist.
+      optional: true

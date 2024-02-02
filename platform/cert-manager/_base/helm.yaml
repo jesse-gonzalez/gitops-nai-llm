@@ -16,7 +16,7 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: cert-manager
-  serviceAccountName: kustomize-controller
+  #serviceAccountName: kustomize-controller
   chart:
     spec:
       chart: cert-manager

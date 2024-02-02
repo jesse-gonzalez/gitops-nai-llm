@@ -76,14 +76,6 @@ tasks:
     - for: {var: CLUSTER_ADDONS}
       cmd: 'echo - $(gum style --foreground=#99000 {{.ITEM}})'
 
-  push-cluster-configs:
-    vars:
-      K8S_CLUSTER_NAME:
-        sh: kubectl config view --minify -o jsonpath='{.clusters[].name}'
-    cmds:
-    - 'git add clusters/{{.K8S_CLUSTER_NAME}}'
-    - 'git commit -am "add: cluster-configs for new cluster nke-gitops-workload-00"'
-
   ## needed to make sure environment variables are passed into shell cli in dynamic variables
   gum:
     cmds:

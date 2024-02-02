@@ -12,6 +12,7 @@ includes:
   rke2: ./.taskfiles/rke2.yaml
   eksa: ./.taskfiles/eksa.yaml
   fluxcd: ./.taskfiles/fluxcd.yaml
+  tofu: ./.taskfiles/tofu.yaml
   test: ./test
 
 tasks:

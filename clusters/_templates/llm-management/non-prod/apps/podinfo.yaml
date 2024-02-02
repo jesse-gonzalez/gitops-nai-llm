@@ -7,7 +7,7 @@ spec:
   interval: 10m0s
   dependsOn:
   - name: cert-manager-resource-configs
-  - name: ingress-nginx-operators
+  - name: ingress-nginx
   sourceRef:
     kind: GitRepository
     name: flux-system

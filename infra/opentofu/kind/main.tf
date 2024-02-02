@@ -28,11 +28,13 @@ module "flux" {
   # Flux repo configuration
   github_org = var.github_org
   github_repository = var.github_repository
+  github_branch = var.github_branch
 
   ## TODO: replace with config map templates
   cluster_secrets = {
     foo = "bar"
   }
+  
   cluster_config = {
     foo2 = "bar2"
   }

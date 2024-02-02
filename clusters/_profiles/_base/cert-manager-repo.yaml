@@ -1,7 +1,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cert-manager-operators
+  name: cert-manager
   namespace: flux-system
 spec:
   interval: 15m
@@ -29,7 +29,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-  - name: cert-manager-operators
+  - name: cert-manager
   interval: 15m
   sourceRef:
     kind: GitRepository

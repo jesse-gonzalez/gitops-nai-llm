@@ -12,6 +12,12 @@ variable "github_repository" {
   type = string 
 }
 
+variable "github_branch" {
+  description = "Name of the Github Branch that flux will be pulling configs from"
+  default = "main"
+  type = string 
+}
+
 variable "github_app_id" {
   description = "Github Application ID to be used for Repo Integration"
   default = "813903"

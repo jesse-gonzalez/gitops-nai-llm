@@ -20,11 +20,12 @@ resource "flux_bootstrap_git" "this" {
 # Custom profile management
 locals {
   flux_platform_path = "clusters/${var.cluster_name}/platform"
+  flux_apps_path = "clusters/${var.cluster_name}/apps"
 }
 
 resource "github_repository_file" "kustomization" {
   repository          = var.github_repository
-  branch              = "main"
+  branch              = var.github_branch
   commit_message      = "[Flux] Configure Kustomization for ${var.cluster_name}"
   overwrite_on_create = var.overwrite_files_on_create
   file                = "${local.flux_platform_path}/kustomization.yaml"
@@ -39,7 +40,7 @@ resource "github_repository_file" "kustomization" {
 
 resource "github_repository_file" "secrets" {
   repository          = var.github_repository
-  branch              = "main"
+  branch              = var.github_branch
   commit_message      = "[Flux] Configure cluster secrets for ${var.cluster_name}"
   overwrite_on_create = var.overwrite_files_on_create
   file                = "${local.flux_platform_path}/cluster-secrets.yaml"

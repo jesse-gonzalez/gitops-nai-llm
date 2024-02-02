@@ -28,7 +28,7 @@ tasks:
     cmds:
     - 'git add clusters/{{.K8S_CLUSTER_NAME}}'
     - 'git commit -am "add: cluster-configs for new cluster nke-gitops-workload-00"'
-    - 'git push origin'
+    - 'git pull origin --autostash && git push origin'
     - |
       flux bootstrap github \
         --owner=${GITHUB_USER} \

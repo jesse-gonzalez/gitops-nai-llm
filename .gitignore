@@ -52,9 +52,12 @@ __pycache__
 
 # terraform
 .terraform
+.terraform.*
 *.pem
 *.tfstate
 *.tfstate.backup
-.terraform.lock.hcl
 terraform/**-config
 opentofu/**-config
+
+# kind
+kind-**

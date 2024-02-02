@@ -1,7 +1,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: ingress-nginx
+  name: ingress-nginx-operators
   namespace: flux-system
 spec:
   interval: 15m
@@ -18,6 +18,9 @@ spec:
       namespace_name: ingress-nginx
     substituteFrom:
     - kind: ConfigMap
-      name: platform-namespace-vars
+      name: cluster-vars
       # Use this ConfigMap if it exists, but proceed if it doesn't.
       optional: true
+    - kind: Secret
+      name: cluster-secrets
+      # Fail if this Secret does not exist.

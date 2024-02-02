@@ -39,7 +39,7 @@ tasks:
         sh: kubectl config view --minify -o jsonpath='{.clusters[].name}'
     cmds:
     - mkdir -p "{{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}"
-    - cp -rf {{.PROJECT_DIR}}/clusters/_tpl/{{.CLUSTER_PROFILE}}/{{.ENVIRONMENT_TYPE}}/ {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/
+    - cp -rf {{.PROJECT_DIR}}/clusters/_templates/{{.CLUSTER_PROFILE}}/{{.ENVIRONMENT_TYPE}}/ {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/
     requires:
       vars: [PROJECT_DIR, CLUSTER_PROFILE, ENVIRONMENT_TYPE]
 

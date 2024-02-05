@@ -8,6 +8,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  # Decryption configuration starts here
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
   #serviceAccountName: kustomize-controller
   path: ./platform/ingress-nginx/_operators
   prune: true

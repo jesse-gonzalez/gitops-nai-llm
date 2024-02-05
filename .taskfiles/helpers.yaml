@@ -14,4 +14,3 @@ tasks:
       cmd: '[ -n "$(which {{ .TOOL }})" ] || (echo "ERROR: failed to find required tool: {{ .TOOL }}." && exit 1;)'
     silent: true
     internal: true
-

@@ -13,6 +13,7 @@ includes:
   eksa: ./.taskfiles/eksa.yaml
   fluxcd: ./.taskfiles/fluxcd.yaml
   tofu: ./.taskfiles/tofu.yaml
+  sops: ./.taskfiles/sops.yaml
   test: ./test
 
 tasks:

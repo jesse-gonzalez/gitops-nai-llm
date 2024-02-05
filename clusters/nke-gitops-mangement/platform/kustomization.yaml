@@ -4,5 +4,5 @@ namespace: flux-system
 components:
 - ../../_profiles/llm-management/non-prod
 resources:
-- cluster-secrets.yaml
+#- cluster-secrets.yaml
 - cluster-config.yaml

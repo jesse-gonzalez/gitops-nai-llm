@@ -25,7 +25,7 @@ spec:
     kind: GitRepository
     name: flux-system
   # Decryption configuration starts here
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
+  # decryption:
+  #   provider: sops
+  #   secretRef:
+  #     name: sops-age

@@ -9,10 +9,10 @@ spec:
     kind: GitRepository
     name: flux-system
   # Decryption configuration starts here
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
+  # decryption:
+  #   provider: sops
+  #   secretRef:
+  #     name: sops-age
   #serviceAccountName: kustomize-controller
   path: ./platform/kube-vip/_operators
   prune: true
@@ -45,10 +45,10 @@ spec:
     kind: GitRepository
     name: flux-system
   # Decryption configuration starts here
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
+  # decryption:
+  #   provider: sops
+  #   secretRef:
+  #     name: sops-age
   ##serviceAccountName: kustomize-controller
   path: ./platform/kube-vip/_resource-configs
   prune: true

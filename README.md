@@ -22,7 +22,7 @@
 │   │   └── platform # generated from _templates
 │   │       ├── kustomization.yaml # Maps to `management` profile above and injects secrets/config in the cluster
 │   │       ├── cluster-secrets.yaml
-│   │       └── cluster-config.yaml
+│   │       └── cluster-configs.yaml
 │   ├── nke-workload-cluster-00 # An example cluster instance generated from `_templates/[prod|non-prod]-workload-cluster`
 │   └── _templates # Used to generate management cluster instances with all configs/secrets needed
 │       ├── management-cluster 

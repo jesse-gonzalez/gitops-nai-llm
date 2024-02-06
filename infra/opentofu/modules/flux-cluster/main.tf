@@ -58,7 +58,7 @@ resource "github_repository_file" "config" {
   branch              = var.github_branch
   commit_message      = "[Flux] Configuring cluster config for ${var.cluster_name}"
   overwrite_on_create = var.overwrite_files_on_create
-  file                = "${local.flux_platform_path}/cluster-config.yaml"
+  file                = "${local.flux_platform_path}/cluster-configs.yaml"
   content             = templatefile(
     "${path.module}/templates/config.sample.yaml", 
     {

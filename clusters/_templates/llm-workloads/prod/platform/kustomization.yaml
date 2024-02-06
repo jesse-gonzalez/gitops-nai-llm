@@ -5,4 +5,4 @@ components:
 - ../../_profiles/llm-workloads/prod
 resources:
 - cluster-secrets.yaml
-- cluster-config.yaml
+- cluster-configs.yaml

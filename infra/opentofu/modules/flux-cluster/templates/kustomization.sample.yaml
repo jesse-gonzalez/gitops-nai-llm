@@ -8,4 +8,4 @@ components:
   - ../../_profiles/${profile_name}/${environment_type}
 resources:
   - cluster-secrets.yaml
-  - cluster-config.yaml
+  - cluster-configs.yaml

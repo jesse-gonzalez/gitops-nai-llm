@@ -23,7 +23,7 @@ spec:
     #   namespace_name: kube-system
     substituteFrom:
     - kind: ConfigMap
-      name: cluster-config
+      name: cluster-configs
       # Use this ConfigMap if it exists, but proceed if it doesn't.
       optional: true
       # - kind: Secret

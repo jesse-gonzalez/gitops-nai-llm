@@ -11,7 +11,7 @@ includes:
   ocp: ./.taskfiles/ocp.yaml
   rke2: ./.taskfiles/rke2.yaml
   eksa: ./.taskfiles/eksa.yaml
-  fluxcd: ./.taskfiles/fluxcd.yaml
+  flux: ./.taskfiles/flux.yaml
   tofu: ./.taskfiles/tofu.yaml
   sops: ./.taskfiles/sops.yaml
   test: ./test

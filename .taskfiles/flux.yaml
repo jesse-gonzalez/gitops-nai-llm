@@ -10,15 +10,22 @@ tasks:
     vars:
       REQUIRED_TOOLS_LIST: "{{.REQUIRED_TOOLS_LIST}}"
 
-  check:
+  verify:
     deps: [default]
+    desc: Verify flux meets the prerequisites
     cmds:
     - flux check --pre
+
+  reconcile:
+    desc: Force update Flux to pull in changes from your Git repository
+    cmds:
+    - flux reconcile -n flux-system source git flux-cluster
+    - flux reconcile -n flux-system kustomization flux-cluster
 
   bootstrap:
     silent: true
     desc: Executes FluxCD Bootstrap against Target K8s Cluster
-    deps: [check]
+    deps: [verify]
     vars:
       K8S_CLUSTER_NAME:
         sh: kubectl config view --minify -o jsonpath='{.clusters[].name}'
@@ -39,3 +46,9 @@ tasks:
         --force
     requires:
       vars: [GITHUB_USER, GITHUB_REPO]
+
+  troubleshoot:
+    desc: Use to troubleshoot issues with flux resources
+    cmds:
+    - flux get all
+    - flux stats

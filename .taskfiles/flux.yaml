@@ -16,12 +16,6 @@ tasks:
     cmds:
     - flux check --pre
 
-  reconcile:
-    desc: Force update Flux to pull in changes from your Git repository
-    cmds:
-    - flux reconcile -n flux-system source git flux-cluster
-    - flux reconcile -n flux-system kustomization flux-cluster
-
   bootstrap:
     silent: true
     desc: Executes FluxCD Bootstrap against Target K8s Cluster
@@ -47,7 +41,14 @@ tasks:
     requires:
       vars: [GITHUB_USER, GITHUB_REPO]
 
-  troubleshoot:
+
+  reconcile:
+    desc: Force update Flux to pull in changes from your Git repository
+    cmds:
+    - flux reconcile -n flux-system source git flux-system
+    - flux reconcile -n flux-system kustomization flux-system
+
+  tshoot:
     desc: Use to troubleshoot issues with flux resources
     cmds:
     - flux get all

@@ -1,6 +1,10 @@
 # ignore local env files
+.configs/
 .config.env
 _backup
+
+# ignore sops age keys
+*.agekey
 
 # ignore binaries
 bin/

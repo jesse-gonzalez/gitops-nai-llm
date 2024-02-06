@@ -3,4 +3,4 @@ apiVersion: v1
 metadata:
   name: cluster-config
 data:
-  foo2: bar2
+  BOOTSTRAP_KUBE_VIP_ADDR: "10.38.20.150-10.38.20.151"

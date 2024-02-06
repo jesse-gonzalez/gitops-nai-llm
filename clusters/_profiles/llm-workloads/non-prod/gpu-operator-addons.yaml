@@ -4,7 +4,5 @@ metadata:
   name: gpu-operator
   namespace: flux-system
 spec:
-  resources:
-  - ../gpu-time-slicing-config.yaml
   components:
   - ../enable-time-slicing

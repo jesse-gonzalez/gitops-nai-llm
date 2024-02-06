@@ -55,8 +55,8 @@ spec:
   wait: true
   timeout: 5m
   postBuild:
-    substitute:
-      namespace_name: kube-vip
+    #substitute:
+    #  namespace_name: kube-system
     substituteFrom:
     - kind: ConfigMap
       name: cluster-configs

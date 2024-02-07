@@ -117,16 +117,14 @@ fi
 
 AGE_PUBLIC_KEY=$(age-keygen -y .local/_common/age.agekey)
 
-echo "Setting fingerprint: $AGE_PUBLIC_KEY in file configs/_common/.sops.yaml"
+echo "Setting fingerprint: $AGE_PUBLIC_KEY in file $CLUSTER_PLATFORM_DIR/.sops.yaml"
 
-if [ ! -f configs/_common/.sops.yaml ]; then
-  echo "configs/_common/.sops.yaml doesn't exist, generating now."
-  cat <<EOF | tee configs/_common/.sops.yaml
-  creation_rules:
-  - path_regex: cluster/.*\.sops\.ya?ml
-    encrypted_regex: "^(data|stringData)$"
-    key_groups:
-      - age: '$(echo $AGE_PUBLIC_KEY)'
+if [ ! -f $CLUSTER_PLATFORM_DIR/.sops.yaml ]; then
+echo "$CLUSTER_PLATFORM_DIR/.sops.yaml doesn't exist, generating now."
+cat <<EOF | tee $CLUSTER_PLATFORM_DIR/.sops.yaml
+creation_rules:
+- encrypted_regex: "^(data|stringData)$"
+  age: $(echo $AGE_PUBLIC_KEY)
 EOF
 fi
 

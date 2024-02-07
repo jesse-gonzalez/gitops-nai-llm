@@ -1,6 +1,6 @@
 version: '3'
 
-dotenv: ['configs/_common/.env', '.config.env']
+dotenv: ['configs/_common/.env']
 
 includes:
   helpers: ./.taskfiles/helpers.yaml

@@ -2,12 +2,6 @@ version: '3'
 
 vars:
   REQUIRED_TOOLS_LIST: gum
-  # K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME | default "nke-gitops-management"}}'
-  # CLUSTER_PROFILE: '{{.CLUSTER_PROFILE | default "llm-management"}}'
-  # ENVIRONMENT_TYPE: '{{.ENVIRONMENT | default "non-prod"}}'
-  # PRISM_CENTRAL_ENDPOINT: '{{.PRISM_CENTRAL_ENDPOINT | default "prism-central.kalm-main-20-1-ocp.ncnlabs.ninja"}}'
-  # PRISM_CENTRAL_USER: '{{.PRISM_CENTRAL_USER | default "admin"}}'
-  # PRISM_CENTRAL_PASS: '{{.PRISM_CENTRAL_PASS | default "nutanix/4u"}}'
 
 env:
   ## gum charm cli util defaults
@@ -26,14 +20,14 @@ tasks:
     vars:
       REQUIRED_TOOLS_LIST: "{{.REQUIRED_TOOLS_LIST}}"
 
-  e2e-bootstrap:
+  full:
     silent: true
     desc: Initializes cluster configs, commits locally, pushes remotely & bootstraps FluxCD End to End
     cmds:
-    - task: cluster-configs
-    - task: :fluxcd:bootstrap
+    - task: configs
+    - task: :flux:bootstrap
 
-  cluster-configs:
+  configs:
     silent: true
     desc: Initializes Cluster Configs based on Cluster Profile and Target K8s Cluster
     vars:
@@ -74,7 +68,6 @@ tasks:
     - 'echo Additional Feature Addons: '
     - for: {var: CLUSTER_ADDONS}
       cmd: 'echo - $(gum style --foreground=#99000 {{.ITEM}})'
-
 
   init-local-configs:
     deps: [default]

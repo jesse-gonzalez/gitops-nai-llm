@@ -1,8 +1,0 @@
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: cluster-configs
-data:
-  KUBE_VIP_ADDR: "10.38.20.75-10.38.20.76"
-  GPU_CUDA_TOOLKIT_VERSION: "v1.14.3-centos7"
-  GPU_TIME_SLICING_NUM_REPLICAS: "4"

@@ -11,13 +11,14 @@ tasks:
       REQUIRED_TOOLS_LIST: "{{.REQUIRED_TOOLS_LIST}}"
 
   verify:
+    silent: true
     deps: [default]
     desc: Verify flux meets the prerequisites
     cmds:
     - flux check --pre
 
   bootstrap:
-    silent: false
+    silent: true
     desc: Executes FluxCD Bootstrap against Target K8s Cluster
     deps: [verify]
     precondition:
@@ -34,12 +35,13 @@ tasks:
         --branch={{.GITHUB_BRANCH}} \
         --personal \
         --path=clusters/{{.K8S_CLUSTER_NAME}} \
-        --reconcile \
         --force
     requires:
       vars: [K8S_CLUSTER_NAME, GITHUB_USER, GITHUB_REPO, GITHUB_BRANCH]
 
   git-promote:
+    silent: false
+    deps: [default]
     desc: Adds newly created cluster to git and pushes to remote branch
     precondition:
     - test -d {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform
@@ -53,6 +55,8 @@ tasks:
       vars: [K8S_CLUSTER_NAME, GITHUB_BRANCH]
 
   create-decrypt-secret:
+    deps: [default]
+    silent: true
     desc: Create K8s secret with SOPS age key
     cmds:
     - |
@@ -69,12 +73,15 @@ tasks:
       vars: [SOPS_AGE_KEY_FILE]
 
   reconcile:
+    deps: [default]
+    silent: true
     desc: Force update Flux to pull in changes from your Git repository
     cmds:
     - flux reconcile -n flux-system source git flux-system
     - flux reconcile -n flux-system kustomization flux-system
 
   tshoot:
+    deps: [default]
     desc: Use to troubleshoot issues with flux resources
     cmds:
     - flux get all

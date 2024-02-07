@@ -8,9 +8,6 @@ includes:
   init: ./.taskfiles/init.yaml
   kubectl: ./.taskfiles/kubectl.yaml
   nke: ./.taskfiles/nke.yaml
-  ocp: ./.taskfiles/ocp.yaml
-  rke2: ./.taskfiles/rke2.yaml
-  eksa: ./.taskfiles/eksa.yaml
   flux: ./.taskfiles/flux.yaml
   tofu: ./.taskfiles/tofu.yaml
   sops: ./.taskfiles/sops.yaml

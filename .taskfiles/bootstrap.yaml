@@ -19,11 +19,19 @@ tasks:
       msg: './cluster-configs.yaml not found, please copy ./cluster-configs.yaml.example and update manually'
     desc: Initializes cluster configs, commits and pushes remotely & bootstraps FluxCD
     cmds:
+    - task: nke-prompt
     - task: configs
     - task: git-promote
     - task: :flux:bootstrap
     - task: :flux:reconcile
     - 'git pull origin --autostash'
+
+  nke-prompt:
+    vars:
+      NKE_PROMPT:
+        sh: 'task bootstrap:gum -- choose --header "Would you like to download creds for NKE cluster?" "yes" "no"'
+    cmds:
+    - '{{if eq .NKE_PROMPT "yes"}} task nke:select-creds {{end}}'
 
   configs:
     silent: true

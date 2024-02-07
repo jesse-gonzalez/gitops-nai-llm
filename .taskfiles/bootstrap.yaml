@@ -68,6 +68,11 @@ tasks:
       cmd: 'echo - $(gum style --foreground=#99000 {{.ITEM}})'
 
   init-local-configs:
+    preconditions:
+    - sh: test -f ./cluster-secrets.yaml
+      msg: './cluster-secrets.yaml not found, please copy ./cluster-secrets.yaml.example and update manually'
+    - sh: test -f ./cluster-configs.yaml
+      msg: './cluster-configs.yaml not found, please copy ./cluster-configs.yaml.example and update manually'
     silent: true
     desc: Runs ./init_local_configs.sh bash script to configure cluster configs and encrypt secrets with sops
     deps: [default]

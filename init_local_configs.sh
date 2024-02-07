@@ -123,7 +123,10 @@ if [ ! -f configs/_common/.sops.yaml ]; then
   echo "configs/_common/.sops.yaml doesn't exist, generating now."
   cat <<EOF | tee configs/_common/.sops.yaml
   creation_rules:
-    - age: '$(echo $AGE_PUBLIC_KEY)'
+  - path_regex: cluster/.*\.sops\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age: '$(echo $AGE_PUBLIC_KEY)'
 EOF
 fi
 

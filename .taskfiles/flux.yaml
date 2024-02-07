@@ -17,20 +17,21 @@ tasks:
     - flux check --pre
 
   bootstrap:
-    silent: true
+    silent: false
     desc: Executes FluxCD Bootstrap against Target K8s Cluster
     deps: [verify]
     precondition:
     - test -d {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform
     cmds:
-    - task: git-promote
+    #- task: git-promote
     - kubectl create ns flux-system --dry-run=client -o yaml | kubectl apply -f -
     - task: create-decrypt-secret
     - |
+      export GITHUB_TOKEN={{.GITHUB_TOKEN}} && \
       flux bootstrap github \
-        --owner=${GITHUB_USER} \
-        --repository=${GITHUB_REPO} \
-        --branch=${GITHUB_BRANCH} \
+        --owner={{.GITHUB_USER}} \
+        --repository={{.GITHUB_REPO}} \
+        --branch={{.GITHUB_BRANCH}} \
         --personal \
         --path=clusters/{{.K8S_CLUSTER_NAME}} \
         --force

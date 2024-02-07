@@ -1,5 +1,9 @@
 version: '3'
 
+env:
+  K8S_CLUSTER_NAME:
+    sh: kubectl config view --minify -o jsonpath='{.contexts[0].context.cluster}'
+
 dotenv: ['configs/_common/.env']
 
 includes:
@@ -20,7 +24,7 @@ tasks:
     cmds:
     - task -l
 
-  configs:
+  print-vars:
     cmds:
-    - echo {{.GIT_COMMIT}}
+    - 'echo CURRENT_K8S_CLUSTER: {{.K8S_CLUSTER_NAME}}'
 

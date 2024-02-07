@@ -26,7 +26,7 @@ tasks:
   nke-prompt:
     vars:
       NKE_PROMPT:
-        sh: 'task bootstrap:gum -- choose --header "Would you like to download creds for NKE cluster?" "yes" "no"'
+        sh: 'task bootstrap:gum -- choose --header "Current K8s Cluster: {{.K8S_CLUSTER_NAME}}, Would you like to switch to different NKE cluster?" "yes" "no"'
     cmds:
     - '{{if eq .NKE_PROMPT "yes"}} task nke:select-creds {{end}}'
 

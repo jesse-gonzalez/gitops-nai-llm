@@ -26,6 +26,7 @@ tasks:
     cmds:
     - kubectl create ns flux-system --dry-run=client -o yaml | kubectl apply -f -
     - task: create-decrypt-secret
+    - task: git-promote
     - |
       export GITHUB_TOKEN={{.GITHUB_TOKEN}} && \
       flux bootstrap github \
@@ -39,6 +40,23 @@ tasks:
     - 'git pull origin --autostash'
     requires:
       vars: [K8S_CLUSTER_NAME, GITHUB_USER, GITHUB_REPO, GITHUB_BRANCH]
+
+  git-promote:
+    silent: true
+    deps: [default]
+    desc: Adds newly created cluster to git and pushes to remote branch
+    precondition:
+    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-secrets.yaml
+    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-configs.yaml
+    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/kustomization.yaml
+    prompt: "This will commit the code locally, push remotely and bootstrap the following cluster: {{.K8S_CLUSTER_NAME}}. Do you wish to continue?"
+    cmds:
+    - 'git add clusters/{{.K8S_CLUSTER_NAME}}'
+    - 'git commit -am "add: cluster-configs for new cluster {{.K8S_CLUSTER_NAME}}"'
+    - 'git pull origin --autostash'
+    - 'export GITHUB_TOKEN={{.GITHUB_TOKEN}} && git push origin'
+    requires:
+      vars: [K8S_CLUSTER_NAME, GITHUB_BRANCH]
 
   create-decrypt-secret:
     deps: [default]

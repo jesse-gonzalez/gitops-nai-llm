@@ -21,7 +21,6 @@ tasks:
     desc: Initializes cluster configs, commits and pushes remotely & bootstraps FluxCD
     cmds:
     - task: configs
-    - task: git-promote
     - task: :flux:bootstrap
 
   nke-prompt:
@@ -93,23 +92,6 @@ tasks:
     - test -f clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-secrets.yaml
     - test -f clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-configs.yaml
     - test -f clusters/{{.K8S_CLUSTER_NAME}}/platform/kustomization.yaml
-
-  git-promote:
-    silent: true
-    deps: [default]
-    desc: Adds newly created cluster to git and pushes to remote branch
-    precondition:
-    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-secrets.yaml
-    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-configs.yaml
-    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/kustomization.yaml
-    prompt: "This will commit the code locally, push remotely and bootstrap the following cluster: {{.K8S_CLUSTER_NAME}}. Do you wish to continue?"
-    cmds:
-    - 'git add clusters/{{.K8S_CLUSTER_NAME}}'
-    - 'git commit -am "add: cluster-configs for new cluster {{.K8S_CLUSTER_NAME}}"'
-    - 'git pull origin --autostash'
-    - 'export GITHUB_TOKEN={{.GITHUB_TOKEN}} && git push origin'
-    requires:
-      vars: [K8S_CLUSTER_NAME, GITHUB_BRANCH]
 
   ## needed to make sure environment variables are passed into shell cli in dynamic variables
   gum:

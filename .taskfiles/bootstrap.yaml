@@ -48,7 +48,6 @@ tasks:
       CLUSTER_ADDONS:
         sh: 'task bootstrap:gum -- choose --no-limit --header "Which additional add-ons would you like to enable?" "gpu-operator" "gpu-time-slicing" "nutanix-csi-files" "nutanix-cosi"'
     cmds:
-    ## initialize new cluster based on k8s distro
     - task: init-local-configs
       vars:
         K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
@@ -56,8 +55,6 @@ tasks:
         CLUSTER_PROFILE: "{{.CLUSTER_PROFILE}}"
         ENVIRONMENT_TYPE: "{{.ENVIRONMENT_TYPE}}"
         CLUSTER_ADDONS: "{{.CLUSTER_ADDONS}}"
-
-    ## print summary of vars
     - task: print-vars
       vars:
         K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
@@ -88,10 +85,6 @@ tasks:
     - ./init_local_configs.sh {{.K8S_CLUSTER_NAME}} {{.CLUSTER_PROFILE}} {{.ENVIRONMENT_TYPE}} true
     requires:
       vars: [PROJECT_DIR, K8S_CLUSTER_NAME, CLUSTER_PROFILE, ENVIRONMENT_TYPE]
-    status:
-    - test -f clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-secrets.yaml
-    - test -f clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-configs.yaml
-    - test -f clusters/{{.K8S_CLUSTER_NAME}}/platform/kustomization.yaml
 
   ## needed to make sure environment variables are passed into shell cli in dynamic variables
   gum:

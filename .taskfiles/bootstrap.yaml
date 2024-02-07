@@ -3,16 +3,6 @@ version: '3'
 vars:
   REQUIRED_TOOLS_LIST: gum
 
-env:
-  ## gum charm cli util defaults
-  GUM_INPUT_PROMPT_FOREGROUND: 99
-  GUM_INPUT_CURSOR_FOREGROUND: 99
-  GUM_INPUT_HEADER_FOREGROUND: 240
-  GUM_INPUT_WIDTH: 100
-  GUM_INPUT_TIMEOUT: 0
-  GUM_INPUT_PROMPT: "> "
-  FOREGROUND: "#99000"
-
 tasks:
 
   default:
@@ -22,10 +12,17 @@ tasks:
 
   full:
     silent: true
+    preconditions:
+    - sh: test -f ./cluster-secrets.yaml
+      msg: './cluster-secrets.yaml not found, please update manually'
+    - sh: test -f ./cluster-configs.yaml
+      msg: './cluster-configs.yaml not found, please update manually'
     desc: Initializes cluster configs, commits locally, pushes remotely & bootstraps FluxCD End to End
     cmds:
     - task: configs
+    - task: git-promote
     - task: :flux:bootstrap
+    - 'git pull origin --autostash'
 
   configs:
     silent: true
@@ -62,6 +59,7 @@ tasks:
         CLUSTER_ADDONS: "{{.CLUSTER_ADDONS}}"
 
   print-vars:
+    silent: true
     cmds:
     - 'echo Target Kubernetes Cluster: $(gum style "{{.K8S_CLUSTER_NAME}}")'
     - 'echo Environment Details: $(gum style "{{.K8S_DISTRO}}:{{.CLUSTER_PROFILE}}:{{.ENVIRONMENT_TYPE}}")'
@@ -70,6 +68,8 @@ tasks:
       cmd: 'echo - $(gum style --foreground=#99000 {{.ITEM}})'
 
   init-local-configs:
+    silent: true
+    desc: Runs ./init_local_configs.sh bash script to configure cluster configs and encrypt secrets with sops
     deps: [default]
     cmds:
     - ./init_local_configs.sh {{.K8S_CLUSTER_NAME}} {{.CLUSTER_PROFILE}} {{.ENVIRONMENT_TYPE}} true
@@ -79,6 +79,23 @@ tasks:
     - test -f clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-secrets.yaml
     - test -f clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-configs.yaml
     - test -f clusters/{{.K8S_CLUSTER_NAME}}/platform/kustomization.yaml
+
+  git-promote:
+    silent: false
+    deps: [default]
+    desc: Adds newly created cluster to git and pushes to remote branch
+    precondition:
+    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-secrets.yaml
+    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-configs.yaml
+    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/kustomization.yaml
+    prompt: "This will commit the code locally, push remotely and bootstrap the following cluster: {{.K8S_CLUSTER_NAME}}. Do you wish to continue?"
+    cmds:
+    - 'git add clusters/{{.K8S_CLUSTER_NAME}}'
+    - 'git commit -am "add: cluster-configs for new cluster {{.K8S_CLUSTER_NAME}}"'
+    - 'git pull origin --autostash'
+    - 'export GITHUB_TOKEN={{.GITHUB_TOKEN}} && git push origin'
+    requires:
+      vars: [K8S_CLUSTER_NAME, GITHUB_BRANCH]
 
   ## needed to make sure environment variables are passed into shell cli in dynamic variables
   gum:

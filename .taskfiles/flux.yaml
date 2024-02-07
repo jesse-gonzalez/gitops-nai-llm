@@ -24,7 +24,6 @@ tasks:
     precondition:
     - test -d {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform
     cmds:
-    - task: git-promote
     - kubectl create ns flux-system --dry-run=client -o yaml | kubectl apply -f -
     - task: create-decrypt-secret
     - |
@@ -38,21 +37,6 @@ tasks:
         --force
     requires:
       vars: [K8S_CLUSTER_NAME, GITHUB_USER, GITHUB_REPO, GITHUB_BRANCH]
-
-  git-promote:
-    silent: false
-    deps: [default]
-    desc: Adds newly created cluster to git and pushes to remote branch
-    precondition:
-    - test -d {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform
-    prompt: "This will commit the code locally, push remotely and bootstrap the following cluster: {{.K8S_CLUSTER_NAME}}. Do you wish to continue?"
-    cmds:
-    - 'git add clusters/{{.K8S_CLUSTER_NAME}}'
-    - 'git commit -am "add: cluster-configs for new cluster {{.K8S_CLUSTER_NAME}}"'
-    - 'git pull origin --autostash'
-    - 'git push origin'
-    requires:
-      vars: [K8S_CLUSTER_NAME, GITHUB_BRANCH]
 
   create-decrypt-secret:
     deps: [default]
@@ -80,7 +64,7 @@ tasks:
     - flux reconcile -n flux-system source git flux-system
     - flux reconcile -n flux-system kustomization flux-system
 
-  tshoot:
+  collect:
     deps: [default]
     desc: Use to troubleshoot issues with flux resources
     cmds:

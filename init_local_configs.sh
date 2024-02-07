@@ -156,3 +156,48 @@ else
 fi
 
 echo "SUCCESS: Decrypt secrets using following command 'sops --decrypt $CLUSTER_PLATFORM_DIR/cluster-secrets.yaml'"
+
+
+
+echo "Encrypting $CLUSTER_PLATFORM_DIR/cluster-secrets.yaml with fingerprint: $AGE_PUBLIC_KEY"
+
+mkdir -p clusters/my-cluster/flux-system
+touch clusters/my-cluster/flux-system/gotk-components.yaml \
+    clusters/my-cluster/flux-system/gotk-sync.yaml \
+    clusters/my-cluster/flux-system/kustomization.yaml
+
+
+## creating directory and empty gotk files to initialize new cluster. if it already exists it won't touch
+if [ ! -d $CLUSTER_PLATFORM_DIR/flux-system ]; then
+  echo "$CLUSTER_PLATFORM_DIR/flux-system doesn't exist, creating directory and files now."
+  mkdir -p $CLUSTER_PLATFORM_DIR/flux-system
+  touch $CLUSTER_PLATFORM_DIR/flux-system/gotk-components.yaml \
+      $CLUSTER_PLATFORM_DIR/flux-system/gotk-sync.yaml
+fi
+
+
+## creating gotk-patch to override decryption provider
+cat <<EOF | tee $CLUSTER_PLATFORM_DIR/flux-system/gotk-patches.yaml
+kind: Kustomization
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+EOF
+
+## creating gotk-patch to include decryption provider
+cat <<EOF | tee $CLUSTER_PLATFORM_DIR/flux-system/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- gotk-components.yaml
+- gotk-sync.yaml
+patches:
+- path: gotk-patches.yaml
+  target:
+    kind: Kustomization
+EOF

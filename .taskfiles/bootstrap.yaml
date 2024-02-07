@@ -20,8 +20,8 @@ tasks:
     desc: Initializes cluster configs, commits and pushes remotely & bootstraps FluxCD
     cmds:
     - task: configs
-    - task: :flux:bootstrap
     - task: git-promote
+    - task: :flux:bootstrap
     - task: :flux:reconcile
     - 'git pull origin --autostash'
 

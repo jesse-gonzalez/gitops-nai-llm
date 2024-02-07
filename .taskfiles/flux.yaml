@@ -21,12 +21,18 @@ tasks:
     silent: false
     desc: Executes FluxCD Bootstrap against Target K8s Cluster
     deps: [verify]
+    vars:
+      K8S_CLUSTER_NAME:
+        sh: kubectl config view --minify -o jsonpath='{.contexts[0].context.cluster}'
     precondition:
     - test -d {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform
     cmds:
     - kubectl create ns flux-system --dry-run=client -o yaml | kubectl apply -f -
     - task: create-decrypt-secret
     - task: git-promote
+      vars:
+        K8S_CLUSTER_NAME:
+          sh: kubectl config view --minify -o jsonpath='{.contexts[0].context.cluster}'
     - |
       export GITHUB_TOKEN={{.GITHUB_TOKEN}} && \
       flux bootstrap github \

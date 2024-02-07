@@ -83,7 +83,8 @@ cluster-secrets.yaml.dec
 
 # ignore local secrets files
 cluster-**.yaml
-!**/platform/cluster-**.yaml
+!**/platform/cluster-configs.yaml
+!**/platform/cluster-secrets.yaml
 
 ## devcontainer stuff
 devcontainer.env

@@ -17,7 +17,7 @@ tasks:
       msg: './cluster-secrets.yaml not found, please update manually'
     - sh: test -f ./cluster-configs.yaml
       msg: './cluster-configs.yaml not found, please update manually'
-    desc: Initializes cluster configs, commits locally, pushes remotely & bootstraps FluxCD End to End
+    desc: Initializes cluster configs, commits and pushes remotely & bootstraps FluxCD
     cmds:
     - task: configs
     - task: git-promote

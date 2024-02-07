@@ -18,7 +18,7 @@ tasks:
     - flux check --pre
 
   bootstrap:
-    silent: true
+    silent: false
     desc: Executes FluxCD Bootstrap against Target K8s Cluster
     deps: [verify]
     precondition:
@@ -39,10 +39,10 @@ tasks:
     - task: reconcile
     - 'git pull origin --autostash'
     requires:
-      vars: [K8S_CLUSTER_NAME, GITHUB_USER, GITHUB_REPO, GITHUB_BRANCH]
+      vars: [K8S_CLUSTER_NAME, GITHUB_TOKEN, GITHUB_USER, GITHUB_REPO, GITHUB_BRANCH]
 
   git-promote:
-    silent: true
+    silent: false
     deps: [default]
     desc: Adds newly created cluster to git and pushes to remote branch
     precondition:
@@ -56,7 +56,7 @@ tasks:
     - 'git pull origin --autostash'
     - 'export GITHUB_TOKEN={{.GITHUB_TOKEN}} && git push origin'
     requires:
-      vars: [K8S_CLUSTER_NAME, GITHUB_BRANCH]
+      vars: [K8S_CLUSTER_NAME, GITHUB_TOKEN, GITHUB_BRANCH]
 
   create-decrypt-secret:
     deps: [default]

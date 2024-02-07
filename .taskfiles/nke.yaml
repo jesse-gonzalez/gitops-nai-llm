@@ -13,24 +13,38 @@ tasks:
 
   download-creds:
     deps: [default]
+    silent: false
     desc: Download NKE kubeconfig via karbon kubectl plugin
     cmds:
-    - 'KARBON_PASSWORD="{{.PRISM_CENTRAL_PASS}}" kubectl karbon login -u {{.PRISM_CENTRAL_USER}} --server {{.PRISM_CENTRAL_ENDPOINT}} --force --insecure'
+    - 'KARBON_PASSWORD="{{.PRISM_CENTRAL_PASS}}" kubectl karbon login -u {{.PRISM_CENTRAL_USER}} --server {{.PRISM_CENTRAL_ENDPOINT}} --cluster {{.K8S_CLUSTER_NAME}} --force --insecure'
     requires:
-      vars: [PRISM_CENTRAL_PASS, PRISM_CENTRAL_USER, PRISM_CENTRAL_ENDPOINT]
+      vars: [K8S_CLUSTER_NAME, PRISM_CENTRAL_PASS, PRISM_CENTRAL_USER, PRISM_CENTRAL_ENDPOINT]
 
-  init:
-    deps:
-    - task: download-creds
-      vars:
-        PRISM_CENTRAL_ENDPOINT: "{{.PRISM_CENTRAL_ENDPOINT}}"
-        PRISM_CENTRAL_USER: "{{.PRISM_CENTRAL_USER}}"
-        PRISM_CENTRAL_PASS: "{{.PRISM_CENTRAL_PASS}}"
-    cmds:
-    - task: generate-configs
-      vars:
-        CLUSTER_PROFILE: "{{.CLUSTER_PROFILE}}"
-        ENVIRONMENT_TYPE: "{{.ENVIRONMENT_TYPE}}"
+  # init:
+  #   #deps:
+  #   # - task: download-creds
+  #   #   vars:
+  #   #     # PRISM_CENTRAL_ENDPOINT: "{{.PRISM_CENTRAL_ENDPOINT}}"
+  #   #     # PRISM_CENTRAL_USER: "{{.PRISM_CENTRAL_USER}}"
+  #   #     # PRISM_CENTRAL_PASS: "{{.PRISM_CENTRAL_PASS}}"
+  #   #     K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
+  #   cmds:
+  #   - task: init-local-configs
+  #     vars:
+  #       K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
+  #       CLUSTER_PROFILE: "{{.CLUSTER_PROFILE}}"
+  #       ENVIRONMENT_TYPE: "{{.ENVIRONMENT_TYPE}}"
+  #   - task: download-creds
+  #     vars:
+  #       # PRISM_CENTRAL_ENDPOINT: "{{.PRISM_CENTRAL_ENDPOINT}}"
+  #       # PRISM_CENTRAL_USER: "{{.PRISM_CENTRAL_USER}}"
+  #       # PRISM_CENTRAL_PASS: "{{.PRISM_CENTRAL_PASS}}"
+  #       K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
+
+  #   # - task: generate-configs
+  #   #   vars:
+  #   #     CLUSTER_PROFILE: "{{.CLUSTER_PROFILE}}"
+  #   #     ENVIRONMENT_TYPE: "{{.ENVIRONMENT_TYPE}}"
 
   generate-configs:
     deps: [default]

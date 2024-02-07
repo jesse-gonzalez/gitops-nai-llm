@@ -1,6 +1,6 @@
 version: '3'
 
-dotenv: ['.config.env']
+dotenv: ['configs/_common/.env', '.config.env']
 
 includes:
   helpers: ./.taskfiles/helpers.yaml
@@ -26,3 +26,4 @@ tasks:
   configs:
     cmds:
     - echo {{.GIT_COMMIT}}
+

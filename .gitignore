@@ -1,7 +1,12 @@
-# ignore local env files
-.configs/
+# ignore anything under configs that's not templates
 .config.env
-_backup
+config/*
+!config/templates
+!config/_common
+
+# ignore local secrets dir
+.local/*
+.hidden/**
 
 # ignore sops age keys
 *.agekey
@@ -20,6 +25,9 @@ bin/
 .junk/
 .sandbox/
 
+# gitguardian cache
+.cache_ggshield
+
 # ignore task temp files
 .task/
 
@@ -28,6 +36,9 @@ _tmp
 tmp
 .lock
 .cache
+
+
+## Ignore python generated stuff
 __pycache__
 
 # ignore kubectl config files
@@ -65,3 +76,23 @@ opentofu/**-config
 
 # kind
 kind-**
+
+# ignore secrets / sops yaml file
+config/**/cluster-secrets.yaml.dec
+cluster-secrets.yaml.dec
+
+# ignore local secrets files
+cluster-secrets.yaml
+cluster-secrets-**.yaml
+cluster-configs.yaml
+cluster-configs-**.yaml
+
+## devcontainer stuff
+devcontainer.env
+
+## cache for git repos
+.repo_cache
+
+## ignore binaries
+*.tar
+*.tar.gz

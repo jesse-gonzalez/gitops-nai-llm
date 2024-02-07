@@ -10,24 +10,7 @@ tasks:
     vars:
       REQUIRED_TOOLS_LIST: "{{.REQUIRED_TOOLS_LIST}}"
 
-  create-key:
-    cmds:
-    - age-keygen -o age.agekey
-
-  create-secrets:
-    cmds:
-    - |
-      cat age.agekey |
-      kubectl create secret generic sops-age \
-        --namespace=flux-system \
-        --from-file=age.agekey=/dev/stdin
-
-  encrypt:
-    desc: encrypt sops file 'to use must include -- before path to file.' eg "task sops:encrypt -- file.yml"
-    cmds:
-    - sops --age=age1ajphw2f4cyyhjcxepuu3egmxepdzgf6wcsr4p46a2cmtswm9930sp8ql2d --encrypt --encrypted-regex '^(data|stringData)$' --in-place {{.CLI_ARGS}}
-
   decrypt:
-    desc: decrypt sops file 'to use must include -- before path to file.'  eg "task sops:decrypt -- file.yml"
+    desc: decrypt sops file 'to use must include -- before path to file.'  eg "task sops:decrypt -- cluster-secrets.yaml"
     cmds:
-    - sops --decrypt --in-place {{.CLI_ARGS}}
+    - sops --decrypt {{.CLI_ARGS}}

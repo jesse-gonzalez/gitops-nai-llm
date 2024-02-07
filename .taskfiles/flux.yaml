@@ -20,16 +20,12 @@ tasks:
     silent: true
     desc: Executes FluxCD Bootstrap against Target K8s Cluster
     deps: [verify]
-    vars:
-      K8S_CLUSTER_NAME:
-        sh: kubectl config view --minify -o jsonpath='{.clusters[].name}'
     precondition:
     - test -d {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform
-    prompt: "This will commit the code locally, push remotely and bootstrap the following cluster: {{.K8S_CLUSTER_NAME}}. Do you wish to continue?"
     cmds:
-    - 'git add clusters/{{.K8S_CLUSTER_NAME}}'
-    - 'git commit -am "add: cluster-configs for new cluster nke-gitops-workload-00"'
-    - 'git pull origin --autostash && git push origin'
+    - task: git-promote
+    - kubectl create ns flux-system --dry-run=client -o yaml | kubectl apply -f -
+    - task: create-decrypt-secret
     - |
       flux bootstrap github \
         --owner=${GITHUB_USER} \
@@ -39,8 +35,35 @@ tasks:
         --path=clusters/{{.K8S_CLUSTER_NAME}} \
         --force
     requires:
-      vars: [GITHUB_USER, GITHUB_REPO]
+      vars: [K8S_CLUSTER_NAME, GITHUB_USER, GITHUB_REPO, GITHUB_BRANCH]
 
+  git-promote:
+    desc: Adds newly created cluster to git and pushes to remote branch
+    precondition:
+    - test -d {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform
+    prompt: "This will commit the code locally, push remotely and bootstrap the following cluster: {{.K8S_CLUSTER_NAME}}. Do you wish to continue?"
+    cmds:
+    - 'git add clusters/{{.K8S_CLUSTER_NAME}}'
+    - 'git commit -am "add: cluster-configs for new cluster {{.K8S_CLUSTER_NAME}}"'
+    - 'git pull origin --autostash && git push --set-upstream {{.GITHUB_BRANCH}} origin'
+    requires:
+      vars: [K8S_CLUSTER_NAME, GITHUB_BRANCH]
+
+  create-decrypt-secret:
+    desc: Create K8s secret with SOPS age key
+    cmds:
+    - |
+      cat {{.SOPS_AGE_KEY_FILE}} |
+      kubectl create secret generic sops-age \
+        --namespace=flux-system \
+        --from-file=age.agekey=/dev/stdin \
+        --dry-run=client -o yaml | kubectl apply -f -
+    preconditions:
+    - sh: test -f {{.SOPS_AGE_KEY_FILE}}
+      msg: |
+        Age Key not found. Have you initialized local configs?
+    requires:
+      vars: [SOPS_AGE_KEY_FILE]
 
   reconcile:
     desc: Force update Flux to pull in changes from your Git repository

@@ -14,9 +14,9 @@ tasks:
     silent: true
     preconditions:
     - sh: test -f ./cluster-secrets.yaml
-      msg: './cluster-secrets.yaml not found, please update manually'
+      msg: './cluster-secrets.yaml not found, please copy ./cluster-secrets.yaml.example and update manually'
     - sh: test -f ./cluster-configs.yaml
-      msg: './cluster-configs.yaml not found, please update manually'
+      msg: './cluster-configs.yaml not found, please copy ./cluster-configs.yaml.example and update manually'
     desc: Initializes cluster configs, commits and pushes remotely & bootstraps FluxCD
     cmds:
     - task: configs

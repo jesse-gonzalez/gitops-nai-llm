@@ -1,7 +1,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: ingress-nginx
+  name: milvus
   namespace: flux-system
 spec:
   interval: 15m
@@ -10,18 +10,18 @@ spec:
     name: flux-system
   dependsOn:
   - name: cert-manager-resource-configs
-  - name: kube-vip-resource-configs
+  - name: ingress-nginx
   decryption:
     provider: sops
     secretRef:
       name: sops-age
-  path: ./platform/ingress-nginx/_operators
+  path: ./platform/milvus/_operators
   prune: true
   wait: true
   timeout: 5m
   postBuild:
     substitute:
-      namespace_name: ingress-nginx
+      namespace_name: milvus
     substituteFrom:
     - kind: ConfigMap
       name: cluster-configs

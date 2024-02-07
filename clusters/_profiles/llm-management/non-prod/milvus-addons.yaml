@@ -8,4 +8,4 @@ spec:
   - ../enable-loadbalancer
   - ../enable-monitoring
   #- ../enable-attu-frontend
-  #- ../enable-nutanix-objects
+  - ../enable-nutanix-objects

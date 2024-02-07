@@ -3,6 +3,11 @@ apiVersion: v1
 metadata:
   name: cluster-configs
 data:
-  KUBE_VIP_ADDR: "10.38.20.75-10.38.20.76"
-  GPU_CUDA_TOOLKIT_VERSION: "v1.14.3-centos7"
-  GPU_TIME_SLICING_NUM_REPLICAS: "4"
+  kube_vip_ipam_range: "10.38.20.75-10.38.20.76"
+  gpu_cuda_toolkit_version: "v1.14.3-centos7"
+  gpu_time_slicing_replica_count: "4"
+  objects_host: "10.38.16.14"
+  objects_port: "80"
+  objects_bucket_name: "milvus"
+  objects_region: "us-east-1"
+  objects_use_ssl: "false"

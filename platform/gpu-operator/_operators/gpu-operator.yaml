@@ -32,5 +32,5 @@ spec:
   interval: 1h
   values:
     toolkit:
-      version: ${GPU_CUDA_TOOLKIT_VERSION:=v1.14.3-centos7}
+      version: ${gpu_cuda_toolkit_version:=v1.14.3-centos7}
 

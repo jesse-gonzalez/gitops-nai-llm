@@ -24,8 +24,7 @@ tasks:
     - test -d {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform
     cmds:
     #- task: git-promote
-    - kubectl create ns flux-system --dry-run=client -o yaml | kubectl apply -f -
-    - task: create-decrypt-secret
+    #- kubectl create ns flux-system --dry-run=client -o yaml | kubectl apply -f -
     - |
       export GITHUB_TOKEN={{.GITHUB_TOKEN}} && \
       flux bootstrap github \
@@ -34,7 +33,9 @@ tasks:
         --branch={{.GITHUB_BRANCH}} \
         --personal \
         --path=clusters/{{.K8S_CLUSTER_NAME}} \
+        --reconcile \
         --force
+    - task: create-decrypt-secret
     requires:
       vars: [K8S_CLUSTER_NAME, GITHUB_USER, GITHUB_REPO, GITHUB_BRANCH]
 

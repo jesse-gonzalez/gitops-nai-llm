@@ -25,11 +25,6 @@ tasks:
     - task: :flux:reconcile
     - 'git pull origin --autostash'
 
-  nke-prompt:
-    prompt: Would you like to download nke creds and select different cluster?
-    cmds:
-    - task: :nke:select-creds
-
   configs:
     silent: true
     deps: [default]

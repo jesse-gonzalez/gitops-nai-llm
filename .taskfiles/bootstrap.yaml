@@ -48,14 +48,14 @@ tasks:
       CLUSTER_ADDONS:
         sh: 'task bootstrap:gum -- choose --no-limit --header "Which additional add-ons would you like to enable?" "gpu-operator" "gpu-time-slicing" "nutanix-csi-files" "nutanix-cosi"'
     cmds:
-    - task: init-local-configs
+    - task: print-vars
       vars:
         K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
         K8S_DISTRO: "{{.K8S_DISTRO}}"
         CLUSTER_PROFILE: "{{.CLUSTER_PROFILE}}"
         ENVIRONMENT_TYPE: "{{.ENVIRONMENT_TYPE}}"
         CLUSTER_ADDONS: "{{.CLUSTER_ADDONS}}"
-    - task: print-vars
+    - task: init-local-configs
       vars:
         K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
         K8S_DISTRO: "{{.K8S_DISTRO}}"

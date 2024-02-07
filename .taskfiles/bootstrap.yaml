@@ -23,8 +23,6 @@ tasks:
     - task: configs
     - task: git-promote
     - task: :flux:bootstrap
-    - task: :flux:reconcile
-    - 'git pull origin --autostash'
 
   nke-prompt:
     vars:

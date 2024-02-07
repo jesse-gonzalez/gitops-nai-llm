@@ -1,7 +1,7 @@
 version: '3'
 
 vars:
-  REQUIRED_TOOLS_LIST: gum
+  REQUIRED_TOOLS_LIST: gum kubectl git
 
 tasks:
 
@@ -20,16 +20,25 @@ tasks:
     desc: Initializes cluster configs, commits and pushes remotely & bootstraps FluxCD
     cmds:
     - task: configs
-    - task: git-promote
     - task: :flux:bootstrap
+    - task: git-promote
+    - task: :flux:reconcile
     - 'git pull origin --autostash'
+
+  nke-prompt:
+    prompt: Would you like to download nke creds and select different cluster?
+    cmds:
+    - task: :nke:select-creds
 
   configs:
     silent: true
+    deps: [default]
     desc: Initializes Cluster Configs based on Cluster Profile and Target K8s Cluster
     vars:
+      K8S_CLUSTER_CONTEXT:
+        sh: kubectl config view -o jsonpath='{range .contexts[*]}{.name}{"\n"}{end}' | gum filter --placeholder "Select Target Kubernetes Cluster Context..."
       K8S_CLUSTER_NAME:
-        sh: 'task bootstrap:gum -- input --header "What is your Kubernetes Cluster Name" --placeholder "nke-nvd-llm-management"'
+        sh: kubectl config view -o jsonpath='{.contexts[?(@.name == "{{.K8S_CLUSTER_CONTEXT}}")].context.cluster}'
       K8S_DISTRO:
         sh: 'task bootstrap:gum -- choose --header "What is Kubernetes Distribution?" "nke" "ocp" "rke2" "eksa"'
       CLUSTER_PROFILE:
@@ -39,6 +48,8 @@ tasks:
       CLUSTER_ADDONS:
         sh: 'task bootstrap:gum -- choose --no-limit --header "Which additional add-ons would you like to enable?" "gpu-operator" "gpu-time-slicing" "nutanix-csi-files" "nutanix-cosi"'
     cmds:
+    ## set local kubectl context
+    - kubectl config use-context {{.K8S_CLUSTER_CONTEXT}}
 
     ## initialize new cluster based on k8s distro
     - task: init-local-configs
@@ -86,7 +97,7 @@ tasks:
     - test -f clusters/{{.K8S_CLUSTER_NAME}}/platform/kustomization.yaml
 
   git-promote:
-    silent: false
+    silent: true
     deps: [default]
     desc: Adds newly created cluster to git and pushes to remote branch
     precondition:

@@ -14,46 +14,23 @@ tasks:
   download-creds:
     deps: [default]
     silent: false
-    desc: Download NKE kubeconfig via karbon kubectl plugin
+    desc: Download NKE kubeconfig for specific cluster
     cmds:
-    - 'KARBON_PASSWORD="{{.PRISM_CENTRAL_PASS}}" kubectl karbon login -u {{.PRISM_CENTRAL_USER}} --server {{.PRISM_CENTRAL_ENDPOINT}} --cluster {{.K8S_CLUSTER_NAME}} --force --insecure'
+    - 'KARBON_PASSWORD="{{.PRISM_CENTRAL_PASS}}" kubectl karbon login -u {{.PRISM_CENTRAL_USER}} --server {{.PRISM_CENTRAL_ENDPOINT}} --cluster {{.K8S_CLUSTER_NAME}} --kubeconfig ${HOME}/.kube/{{.K8S_CLUSTER_NAME}}.cfg --force --insecure'
+    - 'export KUBECONFIG=$KUBECONFIG:${HOME}/.kube/{{.K8S_CLUSTER_NAME}}.cfg'
     requires:
       vars: [K8S_CLUSTER_NAME, PRISM_CENTRAL_PASS, PRISM_CENTRAL_USER, PRISM_CENTRAL_ENDPOINT]
 
-  # init:
-  #   #deps:
-  #   # - task: download-creds
-  #   #   vars:
-  #   #     # PRISM_CENTRAL_ENDPOINT: "{{.PRISM_CENTRAL_ENDPOINT}}"
-  #   #     # PRISM_CENTRAL_USER: "{{.PRISM_CENTRAL_USER}}"
-  #   #     # PRISM_CENTRAL_PASS: "{{.PRISM_CENTRAL_PASS}}"
-  #   #     K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
-  #   cmds:
-  #   - task: init-local-configs
-  #     vars:
-  #       K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
-  #       CLUSTER_PROFILE: "{{.CLUSTER_PROFILE}}"
-  #       ENVIRONMENT_TYPE: "{{.ENVIRONMENT_TYPE}}"
-  #   - task: download-creds
-  #     vars:
-  #       # PRISM_CENTRAL_ENDPOINT: "{{.PRISM_CENTRAL_ENDPOINT}}"
-  #       # PRISM_CENTRAL_USER: "{{.PRISM_CENTRAL_USER}}"
-  #       # PRISM_CENTRAL_PASS: "{{.PRISM_CENTRAL_PASS}}"
-  #       K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
-
-  #   # - task: generate-configs
-  #   #   vars:
-  #   #     CLUSTER_PROFILE: "{{.CLUSTER_PROFILE}}"
-  #   #     ENVIRONMENT_TYPE: "{{.ENVIRONMENT_TYPE}}"
-
-  generate-configs:
+  select-creds:
     deps: [default]
+    silent: false
+    desc: Download NKE kubeconfig for any cluster available on PC.
     vars:
-      K8S_CLUSTER_NAME:
-        sh: kubectl config view --minify -o jsonpath='{.clusters[].name}'
+      PRISM_CENTRAL_ENDPOINT:
+        sh: 'task bootstrap:gum -- input --header "What is your Prism Central Endpoint" --placeholder {{.PRISM_CENTRAL_ENDPOINT}} --value {{.PRISM_CENTRAL_ENDPOINT}}'
+      PRISM_CENTRAL_USER:
+        sh: 'task bootstrap:gum -- input --header "What is your Prism Central Username" --placeholder {{.PRISM_CENTRAL_USER}} --value {{.PRISM_CENTRAL_USER}}'
+      PRISM_CENTRAL_PASS:
+        sh: 'task bootstrap:gum -- input --header "What is your Prism Central Password" --placeholder {{.PRISM_CENTRAL_PASS}} --value {{.PRISM_CENTRAL_PASS}} --password'
     cmds:
-    - mkdir -p "{{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}"
-    - cp -rf {{.PROJECT_DIR}}/clusters/_templates/{{.CLUSTER_PROFILE}}/{{.ENVIRONMENT_TYPE}}/ {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/
-    requires:
-      vars: [PROJECT_DIR, CLUSTER_PROFILE, ENVIRONMENT_TYPE]
-
+    - 'KARBON_PASSWORD="{{.PRISM_CENTRAL_PASS}}" kubectl karbon login -u {{.PRISM_CENTRAL_USER}} --server {{.PRISM_CENTRAL_ENDPOINT}} --force --insecure'

@@ -12,6 +12,7 @@ tasks:
 
   full:
     silent: true
+    deps: [nke-prompt]
     preconditions:
     - sh: test -f ./cluster-secrets.yaml
       msg: './cluster-secrets.yaml not found, please copy ./cluster-secrets.yaml.example and update manually'
@@ -19,7 +20,6 @@ tasks:
       msg: './cluster-configs.yaml not found, please copy ./cluster-configs.yaml.example and update manually'
     desc: Initializes cluster configs, commits and pushes remotely & bootstraps FluxCD
     cmds:
-    - task: nke-prompt
     - task: configs
     - task: git-promote
     - task: :flux:bootstrap
@@ -51,9 +51,6 @@ tasks:
       CLUSTER_ADDONS:
         sh: 'task bootstrap:gum -- choose --no-limit --header "Which additional add-ons would you like to enable?" "gpu-operator" "gpu-time-slicing" "nutanix-csi-files" "nutanix-cosi"'
     cmds:
-    ## set local kubectl context
-    - kubectl config use-context {{.K8S_CLUSTER_CONTEXT}}
-
     ## initialize new cluster based on k8s distro
     - task: init-local-configs
       vars:

@@ -28,7 +28,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bitnami
-      version: "1.x"
+      version: "26.8.x"
   interval: 1h
   values:
     serviceAccount:

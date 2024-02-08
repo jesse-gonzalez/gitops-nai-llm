@@ -5,6 +5,10 @@ metadata:
   namespace: flux-system
 spec:
   values:
+    broker:
+      automountServiceAccountToken: true
+    controller:
+      automountServiceAccountToken: true
     externalAccess:
       enabled: true
       service:

@@ -32,6 +32,7 @@ spec:
   interval: 1h
   values:
     serviceAccount:
+      automountServiceAccountToken: true
       create: true
     rbac:
       create: true

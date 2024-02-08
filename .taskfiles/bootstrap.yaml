@@ -34,6 +34,7 @@ tasks:
     silent: true
     deps: [default]
     desc: Initializes Cluster Configs based on Cluster Profile and Target K8s Cluster
+    interactive: true
     vars:
       K8S_CLUSTER_CONTEXT:
         sh: kubectl config view -o jsonpath='{range .contexts[*]}{.name}{"\n"}{end}' | gum filter --placeholder "Select Target Kubernetes Cluster Context..."
@@ -91,3 +92,4 @@ tasks:
     cmds:
     - gum {{.CLI_ARGS}}
     silent: true
+    interactive: true

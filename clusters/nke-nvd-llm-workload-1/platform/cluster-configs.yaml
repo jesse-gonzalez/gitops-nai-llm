@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: cluster-configs
 data:
-  kube_vip_ipam_range: "10.38.20.150-10.38.20.151"
+  kube_vip_ipam_range: "10.38.20.144-10.38.20.151"
   gpu_cuda_toolkit_version: "v1.14.3-centos7"
   gpu_time_slicing_replica_count: "4"
   objects_host: "10.38.16.14"

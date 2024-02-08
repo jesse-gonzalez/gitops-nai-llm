@@ -1,15 +1,14 @@
 version: '3'
 
 env:
-  K8S_CLUSTER_NAME:
-    sh: kubectl config view --minify -o jsonpath='{.contexts[0].context.cluster}'
+  K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME | default "nke-nvd-llm-management" }}'
 
 dotenv: ['configs/_common/.env']
 
 includes:
   helpers: ./.taskfiles/helpers.yaml
-  bootstrap: ./.taskfiles/bootstrap.yaml
   init: ./.taskfiles/init.yaml
+  bootstrap: ./.taskfiles/bootstrap.yaml
   kubectl: ./.taskfiles/kubectl.yaml
   nke: ./.taskfiles/nke.yaml
   flux: ./.taskfiles/flux.yaml
@@ -24,7 +23,4 @@ tasks:
     cmds:
     - task -l
 
-  print-vars:
-    cmds:
-    - 'echo CURRENT_K8S_CLUSTER: {{.K8S_CLUSTER_NAME}}'
 

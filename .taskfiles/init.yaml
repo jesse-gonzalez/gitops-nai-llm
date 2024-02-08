@@ -20,3 +20,4 @@ tasks:
     - echo {{.PROJECT_DIR}}
     - echo {{.GIT_COMMIT}}
 
+

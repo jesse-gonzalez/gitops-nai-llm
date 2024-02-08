@@ -13,24 +13,30 @@ tasks:
 
   download-creds:
     deps: [default]
-    silent: false
+    silent: true
+    precondition:
+    - sh: test -d ${HOME}/.kube
+      msg: "${HOME}/.kube doesn't exist, please create and try again."
     desc: Download NKE kubeconfig for specific cluster
     cmds:
-    - 'KARBON_PASSWORD="{{.PRISM_CENTRAL_PASS}}" kubectl karbon login -u {{.PRISM_CENTRAL_USER}} --server {{.PRISM_CENTRAL_ENDPOINT}} --cluster {{.K8S_CLUSTER_NAME}} --kubeconfig ${HOME}/.kube/{{.K8S_CLUSTER_NAME}}.cfg --force --insecure'
-    - 'export KUBECONFIG=$KUBECONFIG:${HOME}/.kube/{{.K8S_CLUSTER_NAME}}.cfg'
+    - 'KARBON_PASSWORD="{{.PRISM_CENTRAL_PASS}}" kubectl karbon login -u {{.PRISM_CENTRAL_USER}} --server {{.PRISM_CENTRAL_ENDPOINT}} --cluster {{.K8S_CLUSTER_NAME}} --force --insecure'
+    - 'kubectl config view --raw --minify | tee ${HOME}/.kube/{{.K8S_CLUSTER_NAME}}.cfg'
     requires:
       vars: [K8S_CLUSTER_NAME, PRISM_CENTRAL_PASS, PRISM_CENTRAL_USER, PRISM_CENTRAL_ENDPOINT]
 
   select-creds:
     deps: [default]
-    silent: false
+    silent: true
     desc: Download NKE kubeconfig for any cluster available on PC.
     vars:
       PRISM_CENTRAL_ENDPOINT:
-        sh: 'task bootstrap:gum -- input --header "What is your Prism Central Endpoint" --placeholder {{.PRISM_CENTRAL_ENDPOINT}} --value {{.PRISM_CENTRAL_ENDPOINT}}'
+        sh: 'task bootstrap:gum -- input --header "What is your Prism Central Endpoint" --placeholder pc.ntnxlab.local'
       PRISM_CENTRAL_USER:
-        sh: 'task bootstrap:gum -- input --header "What is your Prism Central Username" --placeholder {{.PRISM_CENTRAL_USER}} --value {{.PRISM_CENTRAL_USER}}'
+        sh: 'task bootstrap:gum -- input --header "What is your Prism Central Username" --placeholder admin'
       PRISM_CENTRAL_PASS:
-        sh: 'task bootstrap:gum -- input --header "What is your Prism Central Password" --placeholder {{.PRISM_CENTRAL_PASS}} --value {{.PRISM_CENTRAL_PASS}} --password'
+        sh: 'task bootstrap:gum -- input --header "What is your Prism Central Password" --placeholder "nutanix/4u" --password'
+      K8S_CLUSTER_NAME:
+        sh: 'KARBON_PASSWORD="{{.PRISM_CENTRAL_PASS}}" kubectl karbon login -u {{.PRISM_CENTRAL_USER}} --server {{.PRISM_CENTRAL_ENDPOINT}} --force --insecure | kubectl config view --raw --minify -o jsonpath="{.clusters[0].name}"'
     cmds:
-    - 'KARBON_PASSWORD="{{.PRISM_CENTRAL_PASS}}" kubectl karbon login -u {{.PRISM_CENTRAL_USER}} --server {{.PRISM_CENTRAL_ENDPOINT}} --force --insecure'
+    - 'kubectl config view --raw --minify | tee ${HOME}/.kube/{{.K8S_CLUSTER_NAME}}.cfg'
+    interactive: true

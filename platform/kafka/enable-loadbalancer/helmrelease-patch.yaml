@@ -12,11 +12,13 @@ spec:
           type: LoadBalancer
           ports:
             external: 9094
-          automountServiceAccountToken: true
         controller:
           type: LoadBalancer
           containerPorts:
             external: 9094
-          automountServiceAccountToken: true
       autoDiscovery:
         enabled: true
+    serviceAccount:
+      create: true
+    rbac:
+      create: true

@@ -30,10 +30,4 @@ spec:
         name: bitnami
       version: "26.8.x"
   interval: 1h
-  values:
-    serviceAccount:
-      automountServiceAccountToken: true
-      create: true
-    rbac:
-      create: true
 

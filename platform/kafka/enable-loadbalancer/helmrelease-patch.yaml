@@ -7,16 +7,15 @@ spec:
   values:
     externalAccess:
       enabled: true
-      service:
-        broker:
-          type: LoadBalancer
-          ports:
-            external: 9094
-          automountServiceAccountToken: true
-        controller:
-          type: LoadBalancer
-          containerPorts:
-            external: 9094
-          automountServiceAccountToken: true
+      broker:
+        type: LoadBalancer
+        ports:
+          external: 9094
+        automountServiceAccountToken: true
+      controller:
+        type: LoadBalancer
+        containerPorts:
+          external: 9094
+        automountServiceAccountToken: true
       autoDiscovery:
         enabled: true

@@ -41,7 +41,7 @@ spec:
     kind: GitRepository
     name: flux-system
   dependsOn:
-  - name: opentelemtry
+  - name: opentelemetry
   decryption:
     provider: sops
     secretRef:

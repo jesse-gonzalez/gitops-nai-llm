@@ -9,5 +9,6 @@ components:
 
 patches:
 - path: ingress-nginx-addons.yaml
-#- path: milvus-addons.yaml
+- path: milvus-addons.yaml
 - path: kafka-addons.yaml
+- path: lets-encrypt-issuer-patch.yaml

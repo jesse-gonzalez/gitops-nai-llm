@@ -11,3 +11,4 @@ data:
   objects_bucket_name: "milvus"
   objects_region: "us-east-1"
   objects_use_ssl: "false"
+  ingress_subdomain: "required_config"

@@ -14,8 +14,8 @@ spec:
         annotations: {cert-manager.io/cluster-issuer: letsencrypt-prod}
         ingressClassName: nginx
         hosts:
-        - attu-dev.supportgpt.dachlab.net
+        - attu-dev.${ingress_subdomain}
         tls:
         - hosts:
-          - attu-dev.supportgpt.dachlab.net
+          - attu-dev.${ingress_subdomain}
           secretName: attu-dev-tld-secret

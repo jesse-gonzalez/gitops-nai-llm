@@ -9,5 +9,5 @@ components:
 
 patches:
 - path: ingress-nginx-addons.yaml
-- path: gpu-operator-addons.yaml
 - path: kubernetes-dashboard-addons.yaml
+- path: gpu-operator-addons.yaml

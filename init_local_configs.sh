@@ -133,6 +133,21 @@ echo "Encrypting $CLUSTER_PLATFORM_DIR/cluster-secrets.yaml with fingerprint: $A
 
 sops --encrypt --in-place --age $AGE_PUBLIC_KEY $CLUSTER_PLATFORM_DIR/cluster-secrets.yaml
 
+
+## generating .dockerconfig jsonfile and then encrypting as per these flux instructions: https://fluxcd.io/flux/components/kustomize/kustomizations/#kustomize-secretgenerator
+## There is known bug when trying to generate that doesn't seem to be resolved - https://github.com/kubernetes-sigs/kustomize/issues/4653
+echo "Generating Encrypted .dockerconfigjson file"
+
+DOCKER_HUB_USER=$(cat ./cluster-secrets.yaml | shyaml get-value stringData.docker_hub_user)
+DOCKER_HUB_PASS=$(cat ./cluster-secrets.yaml | shyaml get-value stringData.docker_hub_password)
+DOCKER_HUB_AUTH=$(echo "${DOCKER_HUB_USER}:${DOCKER_HUB_PASS}" | base64)
+
+cat <<EOF | tee $CLUSTER_PLATFORM_DIR/hub.dockerconfig.json.encrypted >/dev/null
+{"auths": {"http://docker-registry/v2/": {"username":"${DOCKER_HUB_USER}","password":"${DOCKER_HUB_PASS}","auth":"${DOCKER_HUB_AUTH}"} }}
+EOF
+
+sops --encrypt --input-type=json --output-type=json --in-place --age $AGE_PUBLIC_KEY $CLUSTER_PLATFORM_DIR/hub.dockerconfig.json.encrypted
+
 delete_prompt="y"
 
 if [ "$SKIP_DELETE_PROMPT" != "true" ]; then

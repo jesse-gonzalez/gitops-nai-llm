@@ -3,6 +3,13 @@ kind: Kustomization
 namespace: flux-system
 components:
 - ../../_profiles/llm-management/non-prod
+
+secretGenerator:
+- name: regcred
+  type: kubernetes.io/dockerconfigjson
+  files:
+  - .dockerconfigjson=hub.dockerconfig.json.encrypted
+
 resources:
 - cluster-secrets.yaml
 - cluster-configs.yaml

@@ -30,3 +30,4 @@ spec:
         name: opentelemetry
       version: "0.28.1"
   interval: 1h
+  values: {}

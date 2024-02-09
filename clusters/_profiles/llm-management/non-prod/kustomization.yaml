@@ -8,8 +8,8 @@ components:
 - ../_base
 
 patches:
-#- path: lets-encrypt-staging-issuer-patch.yaml
 - path: ingress-nginx-addons.yaml
 - path: kafka-addons.yaml
+#- path: lets-encrypt-staging-issuer-patch.yaml
 - path: uptrace-addons.yaml
 - path: milvus-addons.yaml

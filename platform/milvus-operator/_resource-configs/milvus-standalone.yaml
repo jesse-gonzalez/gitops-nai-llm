@@ -12,8 +12,8 @@ metadata:
 spec:
   config: {}
   components:
-    imagePullSecrets: # Optional
-    - name: regcred
+    # imagePullSecrets:
+    # - name: regcred
     standalone:
       replicas: 1
       serviceType: ClusterIP

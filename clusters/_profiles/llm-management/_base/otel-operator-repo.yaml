@@ -46,7 +46,7 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
-  path: ./platform/opentelemetry/_operators
+  path: ./platform/opentelemetry/_resource-configs
   prune: true
   wait: true
   timeout: 5m

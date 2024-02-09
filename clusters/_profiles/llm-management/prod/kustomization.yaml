@@ -11,5 +11,6 @@ patches:
 - path: cert-manager-addons.yaml
 - path: ingress-nginx-addons.yaml
 - path: lets-encrypt-issuer-patch.yaml
-- path: milvus-addons.yaml
 - path: kafka-addons.yaml
+- path: uptrace-addons.yaml
+- path: milvus-addons.yaml

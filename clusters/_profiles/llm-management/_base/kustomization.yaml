@@ -11,4 +11,4 @@ resources:
 
 patches:
 ### common addon resources
-- kubernetes-dashboard-addons.yaml
+- path: kubernetes-dashboard-addons.yaml

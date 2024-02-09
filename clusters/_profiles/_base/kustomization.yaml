@@ -4,5 +4,8 @@ resources:
 - kube-vip-repo.yaml
 - cert-manager-repo.yaml
 - ingress-nginx-repo.yaml
+- weave-gitops-repo.yaml
+- kubernetes-dashboard-repo.yaml
+
 
 

@@ -4,4 +4,5 @@ resources:
 - kafka-repo.yaml
 - uptrace-repo.yaml
 - otel-operator-repo.yaml
+- otel-collector-deploy-repo.yaml
 - milvus-repo.yaml

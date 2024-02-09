@@ -93,3 +93,10 @@ tasks:
     cmds:
     - flux get all
     - flux stats
+
+  watch:
+    deps: [default]
+    desc: Watch important flux resouces via kubectl
+    cmds:
+    - watch -n 1 "kubectl get gitrepo,helmrepo,hr,ks -n flux-system"
+    interactive: true

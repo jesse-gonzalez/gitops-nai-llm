@@ -9,7 +9,7 @@ spec:
     kind: GitRepository
     name: flux-system
   dependsOn:
-  - name: milvus-operator-resource-configs
+  - name: cert-manager-resource-configs
   - name: ingress-nginx
   decryption:
     provider: sops

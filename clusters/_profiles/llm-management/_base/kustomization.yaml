@@ -6,9 +6,5 @@ resources:
 - uptrace-repo.yaml
 - otel-operator-repo.yaml
 - otel-collector-deploy-repo.yaml
-#- milvus-repo.yaml
 - milvus-operator-repo.yaml
-
-patches:
-### common addon resources
-- path: kubernetes-dashboard-addons.yaml
+#- milvus-repo.yaml

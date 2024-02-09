@@ -1,8 +1,1 @@
-{
-	"auths": {
-		"http://docker-registry/v2/": {
-			"username": "${docker_hub_user}",
-			"password": "${docker_hub_password}"
-		}
-	}
-}
+{"auths":{"http://docker-registry/v2/":{"username": "${docker_hub_user}","password": "${docker_hub_password}"}}}

@@ -10,5 +10,4 @@ components:
 patches:
 - path: cert-manager-addons.yaml
 - path: ingress-nginx-addons.yaml
-- path: lets-encrypt-issuer-patch.yaml
 

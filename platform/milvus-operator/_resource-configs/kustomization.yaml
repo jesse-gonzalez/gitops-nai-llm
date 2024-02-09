@@ -8,4 +8,4 @@ secretGenerator:
   type: kubernetes.io/dockerconfigjson
 
 resources:
-- milvus.yaml
+- milvus-standalone.yaml

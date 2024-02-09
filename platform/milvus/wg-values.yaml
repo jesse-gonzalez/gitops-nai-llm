@@ -4,7 +4,7 @@ attu:
   name: attu
   ingress:
     enabled: true
-    annotations: {cert-manager.io/cluster-issuer: letsencrypt-prod}
+    annotations: {cert-manager.io/cluster-issuer: letsencrypt}
     ingressClassName: nginx
     hosts:
     - attu-dev.supportgpt.dachlab.net

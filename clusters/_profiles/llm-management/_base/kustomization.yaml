@@ -3,3 +3,4 @@ kind: Component
 resources:
 - milvus-repo.yaml
 - kafka-repo.yaml
+- uptrace-repo.yaml

@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
   name: uptrace-grpc-ingress
@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: uptrace-grpc.gptmgmt.cloudnative.nvdlab.net
+  - host: uptrace-grpc.${ingress_subdomain}
     http:
       paths:
       - path: /
@@ -21,9 +21,6 @@ spec:
             port:
               number: 14317
   tls:
-  # This secret must exist beforehand
-  # The cert must also contain the subj-name grpctest.dev.mydomain.com
-  # https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/PREREQUISITES.md#tls-certificates
   - secretName: uptrace-grpc-tls
     hosts:
-      - uptrace-grpc.gptmgmt.cloudnative.nvdlab.net
+    - uptrace-grpc.${ingress_subdomain}

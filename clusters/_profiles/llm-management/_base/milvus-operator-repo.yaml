@@ -21,7 +21,7 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      namespace_name: milvus-operator
+      namespace_name: milvus
     substituteFrom:
     - kind: ConfigMap
       name: cluster-configs
@@ -52,7 +52,7 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      namespace_name: milvus-operator
+      namespace_name: milvus
     substituteFrom:
     - kind: ConfigMap
       name: cluster-configs

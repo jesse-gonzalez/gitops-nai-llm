@@ -30,7 +30,5 @@ spec:
         name: milvus-operator
       version: "0.9.x"
   interval: 1h
-  values:
-    imagePullSecrets: # Optional
-    - name: regcred
+  values: {}
 

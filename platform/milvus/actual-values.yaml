@@ -1,0 +1,57 @@
+
+attu:
+  enabled: true
+  name: attu
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    ingressClassName: nginx
+    hosts:
+    - attu-dev.supportgpt.dachlab.net
+    tls:
+    - hosts:
+      - attu-dev.supportgpt.dachlab.net
+      secretName: attu-dev-tld-secret
+dataCoordinator:
+  replicas: 2
+  activeStandby:
+    enabled: true
+dataNode:
+  replicas: 2
+indexCoordinator:
+  replicas: 2
+indexNode:
+  replicas: 2
+queryCoordinator:
+  replicas: 2
+  activeStandby:
+    enabled: true
+queryNode:
+  replicas: 2
+rootCoordinator:
+  replicas: 2
+  activeStandby:
+    enabled: true
+service:
+  type: LoadBalancer
+
+
+metrics:
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: apps
+minio:
+  enabled: false
+externalS3:
+  enabled: true
+  host: 10.38.16.14
+  port: 80
+  accessKey: lQFkDysbzJtH4KwAvLDP4MEbDRQOwaQd
+  secretKey: h_mp_jZYIrSSO9JCZ7qoAnIc8BNcF7I9
+  useSSL: false
+  bucketName: milvus
+  rootPath: ""
+  region: us-east-1
+  useVirtualHost: false

@@ -33,6 +33,10 @@ spec:
   values:
     cluster:
       enabled: false
+    image:
+      all:
+        pullSecrets:
+        - regcred
     etcd:
       replicaCount: 1
     minio:

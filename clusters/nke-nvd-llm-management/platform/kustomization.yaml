@@ -13,4 +13,3 @@ secretGenerator:
 resources:
 - cluster-secrets.yaml
 - cluster-configs.yaml
-- ns_secrets.yaml

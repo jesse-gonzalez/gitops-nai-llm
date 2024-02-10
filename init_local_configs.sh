@@ -124,7 +124,7 @@ if [ ! -f $CLUSTER_PLATFORM_DIR/.sops.yaml ]; then
 echo "$CLUSTER_PLATFORM_DIR/.sops.yaml doesn't exist, generating now."
 cat <<EOF | tee $CLUSTER_PLATFORM_DIR/.sops.yaml
 creation_rules:
-- encrypted_regex: "^(data|stringData)$"
+- encrypted_regex: "^(data|stringData|auth)$"
   age: $(echo $AGE_PUBLIC_KEY)
 EOF
 fi
@@ -170,10 +170,6 @@ else
   echo "Invalid Entry. please type 'y' or 'n'."
   read -p "Would you like to delete local ./cluster-secrets.yaml and ./cluster-configs.yaml files? (y or n): " delete_prompt
 fi
-
-echo "SUCCESS: Decrypt secrets using following command 'sops --decrypt $CLUSTER_PLATFORM_DIR/cluster-secrets.yaml'"
-
-
 
 echo "Creating Flux bootstrap directories and patch files needed to enable decryption provider"
 

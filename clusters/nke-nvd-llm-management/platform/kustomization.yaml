@@ -5,7 +5,7 @@ components:
 - ../../_profiles/llm-management/non-prod
 
 secretGenerator:
-- name: regcred
+- name: ghcr-auth
   type: kubernetes.io/dockerconfigjson
   files:
   - .dockerconfigjson=hub.dockerconfig.json.encrypted
@@ -13,3 +13,4 @@ secretGenerator:
 resources:
 - cluster-secrets.yaml
 - cluster-configs.yaml
+- ns_secrets.yaml

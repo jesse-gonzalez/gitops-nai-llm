@@ -22,6 +22,8 @@ tasks:
     cmds:
     - task: configs
     - task: :flux:bootstrap
+      vars:
+        K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
 
   nke-prompt:
     vars:

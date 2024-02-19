@@ -39,8 +39,8 @@ tasks:
         --personal \
         --path=clusters/{{.K8S_CLUSTER_NAME}} \
         --force
+    - task: git-pull-autostash
     - task: reconcile
-    - 'git pull origin --autostash'
     requires:
       vars: [K8S_CLUSTER_NAME, GITHUB_TOKEN, GITHUB_USER, GITHUB_REPO, GITHUB_BRANCH]
 
@@ -56,10 +56,17 @@ tasks:
     cmds:
     - 'git add clusters/{{.K8S_CLUSTER_NAME}}'
     - 'git commit -am "add: cluster-configs for new cluster {{.K8S_CLUSTER_NAME}}"'
-    - 'git pull origin --autostash'
-    - 'export GITHUB_TOKEN={{.GITHUB_TOKEN}} && git push origin'
+    - task: git-pull-autostash
+    - 'export GITHUB_TOKEN={{.GITHUB_TOKEN}} && git push origin --set-upstream {{.GITHUB_BRANCH}}'
     requires:
       vars: [K8S_CLUSTER_NAME, GITHUB_TOKEN, GITHUB_BRANCH]
+
+  git-pull-autostash:
+    silent: false
+    deps: [default]
+    desc: Pulls latest from origin, but auto stash whatever is in works and reapplys to current branch
+    cmds:
+    - 'git pull origin --autostash'
 
   create-decrypt-secret:
     deps: [default]

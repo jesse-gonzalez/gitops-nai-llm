@@ -86,6 +86,8 @@ cluster-secrets.yaml.dec
 cluster-**.yaml
 !**/platform/cluster-configs.yaml
 !**/platform/cluster-secrets.yaml
+!cluster-configs.sample.yaml
+!cluster-secrets.sample.yaml
 
 ## devcontainer stuff
 devcontainer.env

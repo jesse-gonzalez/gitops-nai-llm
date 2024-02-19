@@ -26,13 +26,13 @@ CLUSTER_APPS_DIR=clusters/$K8S_CLUSTER_NAME/apps
 
 ## check if local cluster-secrets exists
 if [ ! -f ./cluster-secrets.yaml ]; then
-  echo "./cluster-secrets.yaml doesn't exist, copy ./cluster-secrets.yaml.example and update accordingly"
+  echo "./cluster-secrets.yaml doesn't exist, copy ./cluster-secrets.sample.yaml and update accordingly"
   exit
 fi
 
 ## check if local cluster-configs exists
 if [ ! -f ./cluster-configs.yaml ]; then
-  echo "./cluster-configs.yaml doesn't exist, copy ./cluster-configs.yaml.example and update accordingly"
+  echo "./cluster-configs.yaml doesn't exist, copy ./cluster-configs.sample.yaml and update accordingly"
   exit
 fi
 

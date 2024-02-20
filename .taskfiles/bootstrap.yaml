@@ -27,7 +27,7 @@ tasks:
     cmds:
     - task: nke-prompt
       vars:
-        K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
+        CURRENT_K8S_CLUSTER: "{{.K8S_CLUSTER_NAME}}"
     - task: configs
       vars:
         K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
@@ -38,11 +38,11 @@ tasks:
   nke-prompt:
     vars:
       NKE_PROMPT:
-        sh: 'task bootstrap:gum -- choose --header "Current K8s Cluster: {{.K8S_CLUSTER_NAME}}, Would you like to switch to totally different NKE cluster? You will be prompted for PC creds..." "yes" "no"'
+        sh: 'task bootstrap:gum -- choose --header "Current K8s Cluster: {{.CURRENT_K8S_CLUSTER}}, Would you like to switch to totally different NKE cluster? You will be prompted for PC creds..." "yes" "no"'
     cmds:
     - '{{if eq .NKE_PROMPT "yes"}} task nke:select-creds {{end}}'
     requires:
-      vars: [K8S_CLUSTER_NAME]
+      vars: [CURRENT_K8S_CLUSTER]
 
   configs:
     silent: true

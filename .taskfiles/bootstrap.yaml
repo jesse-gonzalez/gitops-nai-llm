@@ -12,7 +12,9 @@ tasks:
 
   full:
     silent: true
-    deps: [nke-prompt]
+    vars:
+      K8S_CLUSTER_NAME:
+        sh: kubectl config view -o jsonpath='{.contexts[?(@.name == "{{.K8S_CLUSTER_CONTEXT}}")].context.cluster}'
     preconditions:
     - sh: test -f ./cluster-secrets.yaml
       msg: './cluster-secrets.yaml not found, please copy ./cluster-secrets.yaml.example and update manually'
@@ -20,7 +22,12 @@ tasks:
       msg: './cluster-configs.yaml not found, please copy ./cluster-configs.yaml.example and update manually'
     desc: Initializes cluster configs, commits and pushes remotely & bootstraps FluxCD
     cmds:
+    - task: nke-prompt
+      vars:
+        K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
     - task: configs
+      vars:
+        K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
     - task: :flux:bootstrap
       vars:
         K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
@@ -40,8 +47,6 @@ tasks:
     vars:
       K8S_CLUSTER_CONTEXT:
         sh: kubectl config view -o jsonpath='{range .contexts[*]}{.name}{"\n"}{end}' | gum filter --placeholder "Select Target Kubernetes Cluster Context..."
-      K8S_CLUSTER_NAME:
-        sh: kubectl config view -o jsonpath='{.contexts[?(@.name == "{{.K8S_CLUSTER_CONTEXT}}")].context.cluster}'
       K8S_DISTRO:
         sh: 'task bootstrap:gum -- choose --header "What is Kubernetes Distribution?" "nke" "ocp" "rke2" "eksa"'
       CLUSTER_PROFILE:

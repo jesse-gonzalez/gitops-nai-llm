@@ -115,8 +115,6 @@ tasks:
     desc: Runs ./bootstrap_configs.sh script to configure cluster configs and encrypt secrets with sops
     deps: [default]
     preconditions:
-    - sh: test -f .local/{{.K8S_CLUSTER_NAME}}/.config.env
-      msg: '.local/{{.K8S_CLUSTER_NAME}}/.config.env not found, please copy ./.config.sample.env and update manually'
     - sh: ./bootstrap_configs.sh --cluster_name {{.K8S_CLUSTER_NAME}} --verify
     cmds:
     - ./bootstrap_configs.sh --cluster_name {{.K8S_CLUSTER_NAME}}

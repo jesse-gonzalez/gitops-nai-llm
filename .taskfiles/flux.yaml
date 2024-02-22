@@ -74,9 +74,9 @@ tasks:
     prompt: "This will commit the code locally, push remotely and bootstrap the following cluster: {{.K8S_CLUSTER_NAME}}. Do you wish to continue?"
     cmds:
     - 'git add clusters/{{.K8S_CLUSTER_NAME}}'
-    - 'git commit -am "add: cluster-configs for new cluster {{.K8S_CLUSTER_NAME}}"'
-    - 'git pull origin --autostash'
-    - 'git push origin --set-upstream {{.GITHUB_BRANCH}}'
+    - 'git commit --quiet -am "add: cluster-configs for new cluster {{.K8S_CLUSTER_NAME}}"'
+    - 'git pull origin --quiet --autostash --set-upstream {{.GITHUB_BRANCH}}'
+    - 'git push origin --quiet --set-upstream {{.GITHUB_BRANCH}}'
     requires:
       vars: [K8S_CLUSTER_NAME, GITHUB_TOKEN, GITHUB_BRANCH]
 

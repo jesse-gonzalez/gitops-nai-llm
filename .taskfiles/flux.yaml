@@ -19,8 +19,8 @@ tasks:
 
   bootstrap:
     silent: false
-    desc: Executes FluxCD Bootstrap against Target K8s Cluster
     deps: [verify]
+    desc: Executes FluxCD Bootstrap against Target K8s Cluster
     precondition:
     - test -d {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform
     cmds:
@@ -28,7 +28,7 @@ tasks:
     - task: create-decrypt-secret
     - task: git-promote
       vars:
-        K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
+        K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME}}'
     - |
       export GITHUB_TOKEN={{.GITHUB_TOKEN}} && \
       flux bootstrap github \
@@ -61,9 +61,11 @@ tasks:
       vars: [K8S_CLUSTER_NAME, GITHUB_TOKEN, GITHUB_BRANCH]
 
   create-decrypt-secret:
-    deps: [default]
     silent: true
+    deps: [default]
     desc: Create K8s secret with SOPS age key
+    vars:
+      SOPS_AGE_KEY_FILE: '{{.PROJECT_DIR}}/.local/_common/age.agekey'
     cmds:
     - |
       cat {{.SOPS_AGE_KEY_FILE}} |
@@ -79,14 +81,15 @@ tasks:
       vars: [SOPS_AGE_KEY_FILE]
 
   reconcile:
-    deps: [default]
     silent: true
+    deps: [default]
     desc: Force update Flux to pull in changes from your Git repository
     cmds:
     - flux reconcile -n flux-system source git flux-system
     - flux reconcile -n flux-system kustomization flux-system
 
-  collect:
+  summary:
+    silent: true
     deps: [default]
     desc: Use to troubleshoot issues with flux resources
     cmds:
@@ -94,6 +97,7 @@ tasks:
     - flux stats
 
   watch:
+    silent: true
     deps: [default]
     desc: Watch important flux resouces via kubectl
     cmds:

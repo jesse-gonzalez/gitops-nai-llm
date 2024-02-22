@@ -4,7 +4,7 @@ vars:
   REQUIRED_TOOLS_LIST: kubectl, flux
 
 env:
-  K8s_CLUSTER_NAME: "{{.K8s_CLUSTER_NAME}}"
+  K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
   GITHUB_TOKEN: "{{.GITHUB_TOKEN}}"
   # sh: sops --decrypt --age $AGE_PUBLIC_KEY --extract '["stringData"]["github_api_token"]' clusters/${K8S_CLUSTER_NAME}/platform/cluster-secrets.sops.yaml
 

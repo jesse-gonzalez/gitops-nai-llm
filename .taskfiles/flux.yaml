@@ -3,8 +3,8 @@ version: '3'
 vars:
   REQUIRED_TOOLS_LIST: kubectl, flux
 
-env:
-  GITHUB_TOKEN: '{{.GITHUB_TOKEN}}'
+# env:
+#   GITHUB_TOKEN: '{{.GITHUB_TOKEN}}'
 
 tasks:
 
@@ -31,7 +31,6 @@ tasks:
     - task: git-promote
       vars:
         K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME}}'
-    - echo '{{.GITHUB_TOKEN}}' && exit
     - task: bootstrap
       vars:
         K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME}}'
@@ -50,9 +49,6 @@ tasks:
     desc: Executes FluxCD Bootstrap against Target K8s Cluster
     cmds:
     - |
-      echo {{.GITHUB_TOKEN}} && \
-      echo {{.K8S_CLUSTER_NAME}} && \
-      export K8S_CLUSTER_NAME={{.K8S_CLUSTER_NAME}} && \
       export GITHUB_TOKEN={{.GITHUB_TOKEN}} && \
       flux bootstrap github \
         --owner={{.GITHUB_USER}} \
@@ -69,7 +65,7 @@ tasks:
     deps: [default]
     desc: Adds newly created cluster to git and pushes to remote branch
     precondition:
-    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-secrets.yaml
+    - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-secrets.sops.yaml
     - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/cluster-configs.yaml
     - test -f {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform/kustomization.yaml
     prompt: "This will commit the code locally, push remotely and bootstrap the following cluster: {{.K8S_CLUSTER_NAME}}. Do you wish to continue?"

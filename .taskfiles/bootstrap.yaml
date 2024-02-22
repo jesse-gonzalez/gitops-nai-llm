@@ -11,7 +11,7 @@ tasks:
       REQUIRED_TOOLS_LIST: "{{.REQUIRED_TOOLS_LIST}}"
 
   full:
-    silent: true
+    silent: false
     deps: [default]
     desc: Initializes cluster configs, commits and pushes remotely & bootstraps FluxCD
     vars:
@@ -30,9 +30,9 @@ tasks:
     - task: bootstrap-configs
       vars:
         K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
-    # - task: init-configs
-    #   vars:
-    #     K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
+    # # - task: init-configs
+    # #   vars:
+    # #     K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
     - task: :flux:init
       vars:
         K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
@@ -101,8 +101,8 @@ tasks:
     desc: Runs ./init_local_configs.sh bash script to configure cluster configs and encrypt secrets with sops
     deps: [default]
     preconditions:
-    - sh: test -f ./cluster-secrets.yaml
-      msg: './cluster-secrets.yaml not found, please copy ./cluster-secrets.sample.yaml and update manually'
+    - sh: test -f ./cluster-secrets.sops.yaml
+      msg: './cluster-secrets.sops.yaml not found, please copy ./cluster-secrets.sample.yaml and update manually'
     - sh: test -f ./cluster-configs.yaml
       msg: './cluster-configs.yaml not found, please copy ./cluster-configs.sample.yaml and update manually'
     cmds:

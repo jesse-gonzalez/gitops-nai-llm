@@ -3,15 +3,9 @@ version: '3'
 vars:
   REQUIRED_TOOLS_LIST: kubectl, flux
 
-env:
-  K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
-  GITHUB_TOKEN: "{{.GITHUB_TOKEN}}"
-  # sh: sops --decrypt --age $AGE_PUBLIC_KEY --extract '["stringData"]["github_api_token"]' clusters/${K8S_CLUSTER_NAME}/platform/cluster-secrets.sops.yaml
-
 tasks:
 
   default:
-  - echo {{.GITHUB_TOKEN}}
   - task: :helpers:validate
     vars:
       REQUIRED_TOOLS_LIST: "{{.REQUIRED_TOOLS_LIST}}"
@@ -37,10 +31,6 @@ tasks:
     - task: bootstrap
       vars:
         K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME}}'
-        GITHUB_TOKEN: '{{.GITHUB_TOKEN}}'
-        GITHUB_USER: '{{.GITHUB_USER}}'
-        GITHUB_REPO: '{{.GITHUB_REPO}}'
-        GITHUB_BRANCH: '{{.GITHUB_BRANCH}}'
     - 'git pull origin --autostash'
     - task: reconcile
     requires:

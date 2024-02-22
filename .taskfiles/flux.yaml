@@ -17,10 +17,9 @@ tasks:
     cmds:
     - flux check --pre
 
-  bootstrap:
+  init:
     silent: false
     deps: [verify]
-    desc: Executes FluxCD Bootstrap against Target K8s Cluster
     precondition:
     - test -d {{.PROJECT_DIR}}/clusters/{{.K8S_CLUSTER_NAME}}/platform
     cmds:
@@ -29,6 +28,26 @@ tasks:
     - task: git-promote
       vars:
         K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME}}'
+    - task: git-promote
+      vars:
+        K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME}}'
+    - task: bootstrap
+      vars:
+        K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME}}'
+        GITHUB_TOKEN: '{{.GITHUB_TOKEN}}'
+        GITHUB_USER: '{{.GITHUB_USER}}'
+        GITHUB_REPO: '{{.GITHUB_REPO}}'
+        GITHUB_BRANCH: '{{.GITHUB_BRANCH}}'
+    - 'git pull origin --autostash'
+    - task: reconcile
+    requires:
+      vars: [K8S_CLUSTER_NAME, GITHUB_TOKEN, GITHUB_USER, GITHUB_REPO, GITHUB_BRANCH]
+
+  bootstrap:
+    silent: false
+    deps: [default]
+    desc: Executes FluxCD Bootstrap against Target K8s Cluster
+    cmds:
     - |
       export GITHUB_TOKEN={{.GITHUB_TOKEN}} && \
       flux bootstrap github \
@@ -38,8 +57,6 @@ tasks:
         --personal \
         --path=clusters/{{.K8S_CLUSTER_NAME}} \
         --force
-    - 'git pull origin --autostash'
-    - task: reconcile
     requires:
       vars: [K8S_CLUSTER_NAME, GITHUB_TOKEN, GITHUB_USER, GITHUB_REPO, GITHUB_BRANCH]
 

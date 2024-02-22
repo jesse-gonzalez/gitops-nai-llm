@@ -33,7 +33,7 @@ tasks:
     # - task: init-configs
     #   vars:
     #     K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
-    - task: :flux:bootstrap
+    - task: :flux:init
       vars:
         K8S_CLUSTER_NAME: "{{.K8S_CLUSTER_NAME}}"
 

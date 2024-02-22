@@ -31,9 +31,6 @@ tasks:
     - task: git-promote
       vars:
         K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME}}'
-    - task: git-promote
-      vars:
-        K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME}}'
     - task: bootstrap
       vars:
         K8S_CLUSTER_NAME: '{{.K8S_CLUSTER_NAME}}'

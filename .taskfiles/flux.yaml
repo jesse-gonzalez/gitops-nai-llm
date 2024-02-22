@@ -49,6 +49,10 @@ tasks:
     desc: Executes FluxCD Bootstrap against Target K8s Cluster
     cmds:
     - |
+      echo {{.GITHUB_TOKEN}} && \
+      echo {{.K8S_CLUSTER_NAME}} && \
+      export K8S_CLUSTER_NAME={{.K8S_CLUSTER_NAME}} && \
+      export GITHUB_TOKEN={{.GITHUB_TOKEN}} && \
       flux bootstrap github \
         --owner={{.GITHUB_USER}} \
         --repository={{.GITHUB_REPO}} \

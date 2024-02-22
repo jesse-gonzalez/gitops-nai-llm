@@ -45,7 +45,7 @@ tasks:
     - |
       export GITHUB_TOKEN=${GITHUB_TOKEN} && \
       flux bootstrap github \
-        --owner=${GITHUB_USER} \
+        --owner={{.GITHUB_USER}} \
         --repository={{.GITHUB_REPO}} \
         --branch={{.GITHUB_BRANCH}} \
         --personal \
